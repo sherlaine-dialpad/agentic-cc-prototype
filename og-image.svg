@@ -1,0 +1,207 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <!-- Main background gradient -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"  stop-color="#0D0520"/>
+      <stop offset="55%" stop-color="#1A0840"/>
+      <stop offset="100%" stop-color="#10022C"/>
+    </linearGradient>
+    <!-- Purple glow -->
+    <radialGradient id="glow1" cx="75%" cy="45%" r="40%">
+      <stop offset="0%"  stop-color="#8A3FFC" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#8A3FFC" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Secondary glow (left) -->
+    <radialGradient id="glow2" cx="20%" cy="70%" r="35%">
+      <stop offset="0%"  stop-color="#7C3AED" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Card shimmer -->
+    <linearGradient id="card1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="rgba(255,255,255,0.07)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.03)"/>
+    </linearGradient>
+    <linearGradient id="card2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="rgba(138,63,252,0.18)"/>
+      <stop offset="100%" stop-color="rgba(138,63,252,0.06)"/>
+    </linearGradient>
+    <!-- Badge pill gradient -->
+    <linearGradient id="pill" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"  stop-color="#8A3FFC"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+    <!-- Dialpad logo gradient -->
+    <linearGradient id="dpg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="6%"  stop-color="#10022C"/>
+      <stop offset="20%" stop-color="#611F93"/>
+      <stop offset="37%" stop-color="#9325A5"/>
+      <stop offset="56%" stop-color="#D52C86"/>
+      <stop offset="74%" stop-color="#F64850"/>
+      <stop offset="96%" stop-color="#FD6D2D"/>
+    </linearGradient>
+    <!-- Orbit ring -->
+    <radialGradient id="ring" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="rgba(138,63,252,0)"/>
+      <stop offset="85%" stop-color="rgba(138,63,252,0.12)"/>
+      <stop offset="100%" stop-color="rgba(138,63,252,0)"/>
+    </radialGradient>
+    <!-- Filter for glow on star -->
+    <filter id="starGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- Subtle grid -->
+  <g opacity="0.045">
+    <line x1="0" y1="105" x2="1200" y2="105" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="210" x2="1200" y2="210" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="315" x2="1200" y2="315" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="420" x2="1200" y2="420" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="525" x2="1200" y2="525" stroke="white" stroke-width="1"/>
+    <line x1="150" y1="0" x2="150" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="300" y1="0" x2="300" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="450" y1="0" x2="450" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="600" y1="0" x2="600" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="750" y1="0" x2="750" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="900" y1="0" x2="900" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="1050" y1="0" x2="1050" y2="630" stroke="white" stroke-width="1"/>
+  </g>
+
+  <!-- ─── RIGHT: Floating UI cards ─── -->
+  <!-- Card 1 — IVR setup -->
+  <g transform="translate(700,88) rotate(-3)">
+    <rect width="210" height="80" rx="12" fill="url(#card1)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <rect x="14" y="16" width="28" height="28" rx="7" fill="rgba(138,63,252,0.25)"/>
+    <text x="28" y="35" text-anchor="middle" font-size="15" fill="white">📞</text>
+    <text x="56" y="31" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="700" fill="white">IVR Menu</text>
+    <text x="56" y="47" font-family="Inter,system-ui,sans-serif" font-size="10" fill="rgba(255,255,255,0.5)">4 options configured</text>
+    <rect x="14" y="56" width="40" height="7" rx="3.5" fill="rgba(16,185,129,0.3)"/>
+    <rect x="14" y="56" width="40" height="7" rx="3.5" fill="rgba(16,185,129,0.5)"/>
+    <rect x="60" y="56" width="28" height="7" rx="3.5" fill="rgba(255,255,255,0.08)"/>
+    <rect x="94" y="56" width="20" height="7" rx="3.5" fill="rgba(255,255,255,0.08)"/>
+  </g>
+
+  <!-- Card 2 — Queue routing -->
+  <g transform="translate(760,192) rotate(2)">
+    <rect width="230" height="86" rx="12" fill="url(#card2)" stroke="rgba(138,63,252,0.35)" stroke-width="1.5"/>
+    <rect x="14" y="16" width="28" height="28" rx="7" fill="rgba(138,63,252,0.3)"/>
+    <text x="28" y="35" text-anchor="middle" font-size="15" fill="white">⚡</text>
+    <text x="56" y="31" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="700" fill="white">Routing Queue</text>
+    <text x="56" y="47" font-family="Inter,system-ui,sans-serif" font-size="10" fill="rgba(255,255,255,0.55)">Skills-based · 26 agents</text>
+    <!-- Progress bar -->
+    <rect x="14" y="62" width="200" height="5" rx="2.5" fill="rgba(255,255,255,0.1)"/>
+    <rect x="14" y="62" width="160" height="5" rx="2.5" fill="#8A3FFC"/>
+  </g>
+
+  <!-- Card 3 — Build step (AI in progress) -->
+  <g transform="translate(720,300) rotate(-1.5)">
+    <rect width="250" height="96" rx="12" fill="url(#card1)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+    <text x="14" y="26" font-family="Inter,system-ui,sans-serif" font-size="10" font-weight="700" fill="rgba(255,255,255,0.35)" letter-spacing="0.8">BUILDING</text>
+    <!-- Steps -->
+    <g transform="translate(14,36)">
+      <circle cx="6" cy="6" r="5" fill="#10B981"/>
+      <text x="6" y="9.5" text-anchor="middle" font-size="7" fill="white">✓</text>
+      <text x="18" y="10" font-family="Inter,system-ui,sans-serif" font-size="10" fill="rgba(255,255,255,0.75)">Creating IVR menu</text>
+    </g>
+    <g transform="translate(14,56)">
+      <circle cx="6" cy="6" r="5" fill="#10B981"/>
+      <text x="6" y="9.5" text-anchor="middle" font-size="7" fill="white">✓</text>
+      <text x="18" y="10" font-family="Inter,system-ui,sans-serif" font-size="10" fill="rgba(255,255,255,0.75)">Setting up routing queues</text>
+    </g>
+    <g transform="translate(14,76)">
+      <circle cx="6" cy="6" r="5" fill="#8A3FFC"/>
+      <rect x="3" y="3" width="6" height="6" rx="3" fill="white" opacity="0.9">
+        <animate attributeName="opacity" values="0.9;0.2;0.9" dur="1.4s" repeatCount="indefinite"/>
+      </rect>
+      <text x="18" y="10" font-family="Inter,system-ui,sans-serif" font-size="10" fill="rgba(255,255,255,0.6)">Loading AI playbooks…</text>
+    </g>
+  </g>
+
+  <!-- Card 4 — Stats badge -->
+  <g transform="translate(770,418) rotate(1)">
+    <rect width="190" height="68" rx="12" fill="url(#card1)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <text x="16" y="32" font-family="Inter,system-ui,sans-serif" font-size="28" font-weight="800" fill="#C4B5FD">2:34</text>
+    <text x="80" y="26" font-family="Inter,system-ui,sans-serif" font-size="10" font-weight="700" fill="rgba(255,255,255,0.35)" letter-spacing="0.5">SETUP TIME</text>
+    <text x="80" y="40" font-family="Inter,system-ui,sans-serif" font-size="11" fill="rgba(255,255,255,0.55)">vs. 3–8 weeks</text>
+    <text x="16" y="56" font-family="Inter,system-ui,sans-serif" font-size="10" fill="rgba(16,185,129,0.9)">↓ 99.6% faster with AI</text>
+  </g>
+
+  <!-- Connecting dots between cards -->
+  <circle cx="815" cy="178" r="2" fill="rgba(138,63,252,0.5)"/>
+  <circle cx="860" cy="288" r="1.5" fill="rgba(138,63,252,0.35)"/>
+  <circle cx="800" cy="408" r="2" fill="rgba(138,63,252,0.4)"/>
+
+  <!-- ─── LEFT: Main content ─── -->
+
+  <!-- Dialpad logo -->
+  <g transform="translate(72,72)">
+    <rect width="42" height="42" rx="9" fill="#10022C"/>
+    <rect width="42" height="42" rx="9" fill="url(#dpg)" opacity="0.9"/>
+    <!-- Spark icon (simplified) -->
+    <path d="M21 8.5l-5.5 8h4.5l-1.5 7 6.5-9h-5z" fill="white" opacity="0.9"/>
+    <!-- D icon -->
+    <text x="21" y="30" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="900" fill="white" opacity="0">d</text>
+  </g>
+
+  <!-- ✦ AI star — large glow -->
+  <g transform="translate(126,270)" filter="url(#softGlow)">
+    <text font-size="72" fill="#8A3FFC" opacity="0.18">✦</text>
+  </g>
+  <g transform="translate(126,270)" filter="url(#starGlow)">
+    <text font-size="64" fill="#C4B5FD" opacity="0.9">✦</text>
+  </g>
+
+  <!-- Badge pill -->
+  <g transform="translate(72,148)">
+    <rect width="160" height="26" rx="13" fill="url(#pill)" opacity="0.2"/>
+    <rect width="160" height="26" rx="13" fill="none" stroke="rgba(138,63,252,0.5)" stroke-width="1"/>
+    <text x="14" y="17.5" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.85)" letter-spacing="0.5">✦ AGENTIC ADMIN · BETA</text>
+  </g>
+
+  <!-- Main headline -->
+  <text x="72" y="230" font-family="Inter,system-ui,sans-serif" font-size="54" font-weight="800" fill="white" letter-spacing="-1.5">Set up your</text>
+  <text x="72" y="295" font-family="Inter,system-ui,sans-serif" font-size="54" font-weight="800" fill="white" letter-spacing="-1.5">contact center</text>
+  <text x="72" y="360" font-family="Inter,system-ui,sans-serif" font-size="54" font-weight="800" fill="#C4B5FD" letter-spacing="-1.5">in minutes.</text>
+
+  <!-- Subtext -->
+  <text x="72" y="404" font-family="Inter,system-ui,sans-serif" font-size="18" fill="rgba(255,255,255,0.55)">Answer 5 questions. AI builds the rest.</text>
+
+  <!-- Divider line -->
+  <line x1="72" y1="435" x2="560" y2="435" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+  <!-- Stats row -->
+  <g transform="translate(72,460)">
+    <!-- Stat 1 -->
+    <text x="0" y="22" font-family="Inter,system-ui,sans-serif" font-size="26" font-weight="800" fill="#C4B5FD">&lt;5 min</text>
+    <text x="0" y="42" font-family="Inter,system-ui,sans-serif" font-size="13" fill="rgba(255,255,255,0.4)">AI setup time</text>
+    <!-- Divider -->
+    <line x1="90" y1="0" x2="90" y2="50" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <!-- Stat 2 -->
+    <text x="106" y="22" font-family="Inter,system-ui,sans-serif" font-size="26" font-weight="800" fill="#C4B5FD">47+</text>
+    <text x="106" y="42" font-family="Inter,system-ui,sans-serif" font-size="13" fill="rgba(255,255,255,0.4)">steps automated</text>
+    <!-- Divider -->
+    <line x1="210" y1="0" x2="210" y2="50" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <!-- Stat 3 -->
+    <text x="226" y="22" font-family="Inter,system-ui,sans-serif" font-size="26" font-weight="800" fill="#C4B5FD">Day 1</text>
+    <text x="226" y="42" font-family="Inter,system-ui,sans-serif" font-size="13" fill="rgba(255,255,255,0.4)">live, not weeks</text>
+  </g>
+
+  <!-- dialpad.com watermark -->
+  <text x="72" y="590" font-family="Inter,system-ui,sans-serif" font-size="13" fill="rgba(255,255,255,0.2)" letter-spacing="0.3">dialpad.com</text>
+
+  <!-- Decorative small stars -->
+  <text x="640" y="72" font-size="10" fill="rgba(196,181,253,0.4)">✦</text>
+  <text x="1100" y="120" font-size="8" fill="rgba(196,181,253,0.25)">✦</text>
+  <text x="680" y="560" font-size="12" fill="rgba(196,181,253,0.3)">✦</text>
+  <text x="1140" y="500" font-size="9" fill="rgba(196,181,253,0.2)">✦</text>
+</svg>

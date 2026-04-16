@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic Admin — Dialpad</title>
+
+<!-- ── Open Graph / Link Preview ── -->
+<meta property="og:type"        content="website"/>
+<meta property="og:title"       content="Agentic Admin — Dialpad"/>
+<meta property="og:description" content="Set up your contact center in minutes, not months. Answer 5 questions — Dialpad AI configures your IVR, routing, queues, hours, and coaching automatically."/>
+<meta property="og:image"       content="https://sherlaine-dialpad.github.io/agentic-cc-prototype/og-image.svg"/>
+<meta property="og:url"         content="https://sherlaine-dialpad.github.io/agentic-cc-prototype/"/>
+<meta property="og:site_name"   content="Dialpad"/>
+
+<!-- Twitter / X card -->
+<meta name="twitter:card"        content="summary_large_image"/>
+<meta name="twitter:title"       content="Agentic Admin — Dialpad"/>
+<meta name="twitter:description" content="Set up your contact center in minutes, not months. Answer 5 questions — AI builds the rest."/>
+<meta name="twitter:image"       content="https://sherlaine-dialpad.github.io/agentic-cc-prototype/og-image.svg"/>
+
+<!-- General -->
+<meta name="description" content="Set up your contact center in minutes, not months. Answer 5 questions — Dialpad AI configures your IVR, routing, queues, hours, and coaching automatically."/>
+<meta name="theme-color" content="#10022C"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Dialtone-approximate tokens ── */
+:root {
+  /* Brand */
+  --dp-purple:        #7C3AED;
+  --dp-purple-dark:   #5B21B6;
+  --dp-purple-mid:    #8B5CF6;
+  --dp-purple-subtle: #EDE9FE;
+  --dp-purple-pale:   #F5F3FF;
+  --dp-ai:            #8A3FFC;
+  /* Nav */
+  --dp-nav-bg:        #10022C;
+  --dp-nav-w:         50px;
+  /* Surfaces */
+  --dp-surface:       #FFFFFF;
+  --dp-surface-2:     #F5F5F7;
+  --dp-surface-brand: #EDE9FE;
+  /* Text */
+  --dp-text-1:        #1A1A2E;
+  --dp-text-2:        #4B5563;
+  --dp-text-3:        #9CA3AF;
+  /* Borders */
+  --dp-border:        #E5E7EB;
+  --dp-border-subtle: #F3F4F6;
+  /* Feedback */
+  --dp-green:         #10B981;
+  --dp-green-pale:    #D1FAE5;
+  --dp-amber-pale:    #FEF3C7;
+  --dp-amber-dark:    #92400E;
+  /* Shadows */
+  --dp-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --dp-shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+  --dp-radius-sm: 6px;
+  --dp-radius:    10px;
+  --dp-radius-lg: 14px;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--dp-text-1);
+  background: var(--dp-surface-2);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══════════════════════════════════════
+   ADMIN SHELL
+══════════════════════════════════════ */
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Skinny left nav — matches dpadmin exactly */
+.shell-nav {
+  width: var(--dp-nav-w);
+  background: var(--dp-nav-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  gap: 0;
+  z-index: 20;
+}
+.nav-logo {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px;
+}
+.nav-icons { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.nav-icon {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background 0.15s; color: rgba(255,255,255,0.5);
+}
+.nav-icon:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
+.nav-icon.active { background: rgba(139,92,246,0.25); color: #C4B5FD; }
+.nav-icon svg { width: 16px; height: 16px; fill: currentColor; }
+
+/* Main column (header + content) */
+.shell-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Top header — matches dpadmin header */
+.shell-header {
+  height: 52px;
+  background: var(--dp-surface);
+  border-bottom: 1px solid var(--dp-border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px;
+  flex-shrink: 0;
+  position: sticky; top: 0; z-index: 10;
+}
+.shell-header-left { display: flex; align-items: center; gap: 8px; }
+.breadcrumb { font-size: 13px; color: var(--dp-text-3); }
+.breadcrumb-sep { color: var(--dp-border); }
+.breadcrumb-cur { font-size: 13px; font-weight: 600; color: var(--dp-text-1); }
+.header-badge {
+  background: var(--dp-purple-pale); color: var(--dp-purple);
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px; padding: 2px 8px; border-radius: 100px;
+}
+.header-avatar {
+  width: 28px; height: 28px; background: var(--dp-purple-subtle);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--dp-purple);
+}
+
+/* Page container */
+.page { flex: 1; overflow-y: auto; }
+
+/* ══════════════════════════════════════
+   SCREENS (views, not full-page overlays)
+══════════════════════════════════════ */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ══════════════════════════════════════
+   WELCOME / HOME VIEW
+══════════════════════════════════════ */
+.home-content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+.home-section-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.6px; color: var(--dp-text-3); margin-bottom: 16px;
+}
+
+/* Hero card */
+.hero-card {
+  background: linear-gradient(135deg, #1A0840 0%, #2D1065 55%, #1A0840 100%);
+  border-radius: var(--dp-radius-lg);
+  padding: 36px 40px;
+  color: white;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(138,63,252,0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.85); font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.6px;
+  padding: 3px 10px; border-radius: 100px; margin-bottom: 16px;
+}
+.hero-card h1 {
+  font-size: 28px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.1;
+  margin-bottom: 10px; max-width: 520px;
+}
+.hero-card h1 em { font-style: normal; color: #C4B5FD; }
+.hero-card p { font-size: 14px; color: rgba(255,255,255,0.65); max-width: 460px; margin-bottom: 28px; }
+.hero-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+
+/* Stat row inside hero */
+.hero-stats {
+  display: flex; gap: 0;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--dp-radius);
+  overflow: hidden;
+  max-width: 520px;
+}
+.h-stat {
+  flex: 1; padding: 14px 18px; text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+.h-stat:last-child { border-right: none; }
+.h-stat-val { font-size: 20px; font-weight: 800; color: #C4B5FD; }
+.h-stat-lbl { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; line-height: 1.3; }
+
+/* Feature cards row */
+.feature-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+.feature-card {
+  background: var(--dp-surface); border: 1px solid var(--dp-border);
+  border-radius: var(--dp-radius); padding: 18px 20px;
+  cursor: pointer; transition: all 0.15s;
+}
+.feature-card:hover { border-color: var(--dp-purple-mid); box-shadow: var(--dp-shadow-md); }
+.feature-card.primary { border-color: var(--dp-purple); background: var(--dp-purple-pale); }
+.fc-icon {
+  width: 36px; height: 36px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+  margin-bottom: 12px;
+}
+.fc-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.fc-desc { font-size: 12px; color: var(--dp-text-2); line-height: 1.5; }
+.fc-badge {
+  display: inline-block; margin-top: 10px;
+  background: var(--dp-purple-pale); color: var(--dp-purple);
+  font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 100px;
+}
+
+/* Competitor table */
+.compare-card {
+  background: var(--dp-surface); border: 1px solid var(--dp-border);
+  border-radius: var(--dp-radius); overflow: hidden;
+}
+.compare-card table { width: 100%; border-collapse: collapse; }
+.compare-card th {
+  background: var(--dp-surface-2); padding: 10px 16px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.4px; color: var(--dp-text-3); text-align: left;
+  border-bottom: 1px solid var(--dp-border);
+}
+.compare-card td {
+  padding: 10px 16px; font-size: 13px; border-bottom: 1px solid var(--dp-border-subtle);
+}
+.compare-card tr:last-child td { border-bottom: none; }
+.tag-yes { color: var(--dp-green); font-weight: 600; }
+.tag-no  { color: var(--dp-text-3); }
+.tag-partial { color: #F59E0B; font-weight: 600; }
+.tag-ai { color: var(--dp-ai); font-weight: 700; }
+
+/* ══════════════════════════════════════
+   CHAT VIEW (Agentic Setup)
+══════════════════════════════════════ */
+.chat-view {
+  display: flex;
+  height: calc(100vh - 52px);
+}
+
+/* Left sidebar — progress steps */
+.chat-sidebar {
+  width: 220px; flex-shrink: 0;
+  background: var(--dp-surface);
+  border-right: 1px solid var(--dp-border);
+  padding: 20px 16px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.chat-sidebar-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--dp-text-3); margin-bottom: 12px; }
+
+.step-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: var(--dp-radius-sm); transition: all 0.15s;
+}
+.step-row.done   { }
+.step-row.active { background: var(--dp-purple-pale); }
+.step-num {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700;
+  background: var(--dp-surface-2); color: var(--dp-text-3); border: 1.5px solid var(--dp-border);
+  transition: all 0.2s;
+}
+.step-row.done  .step-num { background: var(--dp-green); border-color: var(--dp-green); color: white; font-size: 10px; }
+.step-row.active .step-num { background: var(--dp-purple); border-color: var(--dp-purple); color: white; }
+.step-label { font-size: 12px; font-weight: 500; color: var(--dp-text-3); }
+.step-row.active .step-label { color: var(--dp-purple); font-weight: 600; }
+.step-row.done  .step-label { color: var(--dp-text-2); }
+
+/* Chat messages area */
+.chat-main {
+  flex: 1; display: flex; flex-direction: column; overflow: hidden;
+  background: var(--dp-surface-2);
+}
+.chat-topbar {
+  background: var(--dp-surface); border-bottom: 1px solid var(--dp-border);
+  padding: 0 20px; height: 44px; display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.chat-topbar-left { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+.chat-ai-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--dp-ai);
+  box-shadow: 0 0 6px rgba(138,63,252,0.6);
+}
+.chat-msgs {
+  flex: 1; overflow-y: auto; padding: 20px;
+  display: flex; flex-direction: column; gap: 14px;
+  max-width: 700px; width: 100%; margin: 0 auto;
+}
+
+/* Message bubbles */
+.msg-appear { animation: msgIn 0.2s ease; }
+@keyframes msgIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+.ai-msg { display: flex; gap: 10px; align-items: flex-start; }
+.ai-avatar {
+  width: 28px; height: 28px; background: var(--dp-ai); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; flex-shrink: 0; margin-top: 2px;
+}
+.ai-bubble {
+  background: var(--dp-surface); border: 1px solid var(--dp-border);
+  border-radius: 0 var(--dp-radius) var(--dp-radius) var(--dp-radius);
+  padding: 10px 14px; font-size: 13px; line-height: 1.6;
+  color: var(--dp-text-2); max-width: 440px;
+  box-shadow: var(--dp-shadow-sm);
+}
+.user-msg { display: flex; justify-content: flex-end; }
+.user-bubble {
+  background: var(--dp-purple); color: white;
+  border-radius: var(--dp-radius) var(--dp-radius) 0 var(--dp-radius);
+  padding: 9px 14px; font-size: 13px; font-weight: 500; max-width: 340px;
+}
+
+/* Option chips */
+.opts-group { display: flex; flex-wrap: wrap; gap: 7px; padding-left: 38px; }
+.opt-chip {
+  background: var(--dp-surface); border: 1.5px solid var(--dp-border);
+  color: var(--dp-text-2); padding: 7px 14px; border-radius: 8px;
+  font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.12s; user-select: none;
+}
+.opt-chip:hover { border-color: var(--dp-purple-mid); color: var(--dp-purple); background: var(--dp-purple-pale); }
+.opt-chip.selected { background: var(--dp-purple-subtle); border-color: var(--dp-purple); color: var(--dp-purple-dark); font-weight: 600; }
+.opt-chip.locked { pointer-events: none; }
+.opt-chip.locked:not(.selected) { opacity: 0.35; }
+.opt-chip.locked.selected { opacity: 0.75; }
+.continue-row { padding-left: 38px; margin-top: 4px; }
+
+/* Typing indicator */
+.typing-wrap { display: flex; gap: 10px; align-items: flex-start; }
+.typing-bubble {
+  background: var(--dp-surface); border: 1px solid var(--dp-border);
+  border-radius: 0 var(--dp-radius) var(--dp-radius) var(--dp-radius);
+  padding: 12px 14px; display: flex; gap: 4px; align-items: center;
+  box-shadow: var(--dp-shadow-sm);
+}
+.td { width: 6px; height: 6px; border-radius: 50%; background: var(--dp-text-3); animation: tdB 1.1s ease infinite; }
+.td:nth-child(2) { animation-delay: .17s; }
+.td:nth-child(3) { animation-delay: .34s; }
+@keyframes tdB { 0%,60%,100%{ transform:translateY(0);} 30%{ transform:translateY(-5px);} }
+
+/* ══════════════════════════════════════
+   BUILDING OVERLAY
+══════════════════════════════════════ */
+.building-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: linear-gradient(145deg, #0D0520 0%, #1A0840 50%, #10022C 100%);
+  display: none; align-items: center; justify-content: center;
+}
+.building-overlay.vis { display: flex; }
+.build-card {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 18px; padding: 36px 44px;
+  max-width: 440px; width: 100%; margin: 24px;
+}
+.build-card-head { text-align: center; margin-bottom: 28px; }
+.build-icon {
+  width: 52px; height: 52px; background: rgba(138,63,252,.25);
+  border-radius: 13px; display: flex; align-items: center; justify-content: center;
+  font-size: 24px; margin: 0 auto 14px;
+}
+.build-card-head h2 { font-size: 19px; font-weight: 700; color: white; margin-bottom: 5px; }
+.build-card-head p { font-size: 12px; color: rgba(255,255,255,.5); }
+.prog-track { background: rgba(255,255,255,.1); border-radius: 100px; height: 3px; margin-bottom: 24px; overflow: hidden; }
+.prog-bar { height: 100%; background: var(--dp-purple-mid); border-radius: 100px; width: 0; transition: width .5s ease; }
+.build-list { display: flex; flex-direction: column; gap: 9px; }
+.bs { display: flex; align-items: center; gap: 10px; opacity: 0; transform: translateY(4px); transition: all .3s; }
+.bs.vis { opacity: 1; transform: translateY(0); }
+.bs-ico {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center;
+  font-size: 12px; flex-shrink: 0; transition: all .3s;
+}
+.bs.done .bs-ico { background: var(--dp-green); }
+.bs-txt { font-size: 12px; color: rgba(255,255,255,.6); flex: 1; line-height: 1.4; }
+.bs.done .bs-txt { color: rgba(255,255,255,.88); }
+.bs-ck { font-size: 11px; color: rgba(255,255,255,0); transition: color .3s; }
+.bs.done .bs-ck { color: rgba(255,255,255,.45); }
+
+/* ══════════════════════════════════════
+   RESULT VIEW
+══════════════════════════════════════ */
+.result-content {
+  max-width: 960px; margin: 0 auto; padding: 24px;
+}
+.result-hero {
+  background: linear-gradient(135deg, var(--dp-purple) 0%, var(--dp-purple-dark) 100%);
+  border-radius: var(--dp-radius-lg); padding: 24px 28px; color: white;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 14px; margin-bottom: 18px;
+}
+.rh-left h2 { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+.rh-left p  { font-size: 12px; color: rgba(255,255,255,.7); }
+.rh-badge {
+  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.2);
+  border-radius: 9px; padding: 10px 18px; text-align: center;
+}
+.rh-time { font-size: 24px; font-weight: 800; }
+.rh-lbl  { font-size: 10px; color: rgba(255,255,255,.6); }
+
+/* VS comparison */
+.vs-card {
+  background: var(--dp-surface); border: 1px solid var(--dp-border);
+  border-radius: var(--dp-radius); padding: 16px 20px; margin-bottom: 18px;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.vs-col { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 120px; }
+.vs-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--dp-text-3); }
+.vs-ai   { font-size: 20px; font-weight: 800; color: var(--dp-green); }
+.vs-old  { font-size: 20px; font-weight: 800; color: var(--dp-text-3); text-decoration: line-through; }
+.vs-sub  { font-size: 11px; color: var(--dp-text-3); }
+.vs-arrow { font-size: 18px; color: var(--dp-border); }
+.vs-msg  { flex: 2; font-size: 12px; color: var(--dp-text-2); line-height: 1.6; min-width: 160px; }
+
+/* Config cards */
+.cfg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.cfg-card {
+  background: var(--dp-surface); border: 1px solid var(--dp-border);
+  border-radius: var(--dp-radius); padding: 14px 16px;
+}
+.cfg-head { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
+.cfg-ico { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.cfg-name { font-size: 12px; font-weight: 700; }
+.cfg-cnt  { font-size: 11px; color: var(--dp-text-3); }
+.cfg-items { display: flex; flex-direction: column; gap: 4px; }
+.cfg-item { font-size: 11px; color: var(--dp-text-2); display: flex; gap: 6px; align-items: flex-start; }
+.cfg-item::before { content: '✓'; color: var(--dp-green); font-weight: 700; font-size: 10px; flex-shrink: 0; margin-top: 2px; }
+
+/* ══════════════════════════════════════
+   MANAGE VIEW
+══════════════════════════════════════ */
+.manage-content { max-width: 760px; margin: 0 auto; padding: 24px; }
+.manage-hed { margin-bottom: 20px; }
+.manage-hed h2 { font-size: 18px; font-weight: 800; letter-spacing: -0.2px; margin-bottom: 4px; }
+.manage-hed p  { font-size: 13px; color: var(--dp-text-2); }
+
+.cmd-box {
+  background: var(--dp-surface); border: 1.5px solid var(--dp-border);
+  border-radius: var(--dp-radius); padding: 3px 3px 3px 12px;
+  display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+  transition: border-color .15s;
+}
+.cmd-box:focus-within { border-color: var(--dp-purple); }
+.cmd-star { color: var(--dp-ai); font-size: 16px; flex-shrink: 0; }
+.cmd-input {
+  flex: 1; border: none; outline: none; font-size: 13px; font-family: inherit;
+  color: var(--dp-text-1); background: transparent; padding: 10px 0;
+}
+.cmd-input::placeholder { color: var(--dp-text-3); }
+.btn-apply {
+  background: var(--dp-purple); color: white; border: none;
+  padding: 9px 16px; border-radius: 8px; font-size: 12px; font-weight: 600;
+  cursor: pointer; white-space: nowrap; transition: background .15s; font-family: inherit;
+}
+.btn-apply:hover { background: var(--dp-purple-dark); }
+
+.sugs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+.sug {
+  background: var(--dp-surface); border: 1px solid var(--dp-border);
+  color: var(--dp-text-2); padding: 5px 12px; border-radius: 100px;
+  font-size: 12px; cursor: pointer; transition: all .12s; font-family: inherit;
+}
+.sug:hover { border-color: var(--dp-purple-mid); color: var(--dp-purple); background: var(--dp-purple-pale); }
+
+/* Preview panel */
+.preview-panel { background: var(--dp-surface); border: 1px solid var(--dp-border); border-radius: var(--dp-radius); overflow: hidden; display: none; }
+.preview-panel.vis { display: block; animation: slideUp .2s ease; }
+@keyframes slideUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+.pp-head {
+  padding: 12px 16px; border-bottom: 1px solid var(--dp-border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.pp-head h3 { font-size: 13px; font-weight: 700; }
+.pp-badge { background: var(--dp-purple-pale); color: var(--dp-purple); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 100px; }
+.pp-list { padding: 10px 14px; display: flex; flex-direction: column; gap: 6px; }
+.pchange {
+  display: flex; align-items: flex-start; gap: 9px;
+  background: var(--dp-surface-2); border-radius: 7px; padding: 8px 10px; font-size: 12px;
+}
+.ptype {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .3px; padding: 2px 6px; border-radius: 4px; flex-shrink: 0; margin-top: 1px;
+}
+.ptype.update { background: var(--dp-amber-pale); color: var(--dp-amber-dark); }
+.ptype.create { background: var(--dp-green-pale); color: #065F46; }
+.ptype.notify { background: var(--dp-purple-subtle); color: var(--dp-purple-dark); }
+.pdesc { color: var(--dp-text-2); line-height: 1.5; }
+.pp-footer {
+  padding: 12px 16px; border-top: 1px solid var(--dp-border);
+  display: flex; gap: 8px;
+}
+.btn-confirm { background: var(--dp-purple); color: white; border: none; padding: 8px 18px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background .15s; }
+.btn-confirm:hover { background: var(--dp-purple-dark); }
+.btn-cancel { background: none; border: 1px solid var(--dp-border); color: var(--dp-text-2); padding: 8px 14px; border-radius: 7px; font-size: 12px; cursor: pointer; font-family: inherit; }
+
+.success-bar {
+  background: var(--dp-green-pale); border-radius: 9px; padding: 12px 16px;
+  font-size: 13px; color: #065F46; font-weight: 500; display: none;
+  align-items: center; gap: 8px; margin-top: 12px;
+}
+.success-bar.vis { display: flex; animation: slideUp .2s ease; }
+
+/* ══════════════════════════════════════
+   BUTTONS (global)
+══════════════════════════════════════ */
+.btn-pri {
+  background: var(--dp-purple); color: white; border: none;
+  padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .15s; font-family: inherit;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-pri:hover { background: var(--dp-purple-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(124,58,237,.3); }
+.btn-sec {
+  background: var(--dp-surface); color: var(--dp-text-2);
+  border: 1px solid var(--dp-border); padding: 10px 18px;
+  border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: all .15s; font-family: inherit;
+}
+.btn-sec:hover { border-color: var(--dp-text-3); }
+.btn-ghost {
+  background: none; color: var(--dp-text-2);
+  border: 1px solid var(--dp-border); padding: 8px 14px;
+  border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer;
+  font-family: inherit; transition: border-color .12s;
+}
+.btn-ghost:hover { border-color: var(--dp-text-3); }
+.btn-next {
+  background: var(--dp-purple); color: white; border: none;
+  padding: 8px 18px; border-radius: 7px; font-size: 12px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: background .15s;
+}
+.btn-next:hover { background: var(--dp-purple-dark); }
+
+@media(max-width:640px) {
+  .feature-row { grid-template-columns: 1fr; }
+  .chat-sidebar { display: none; }
+  .cfg-grid { grid-template-columns: 1fr; }
+  .hero-card h1 { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+     BUILDING OVERLAY (modal, no shell)
+════════════════════════════════════ -->
+<div class="building-overlay" id="building-overlay">
+  <div class="build-card">
+    <div class="build-card-head">
+      <div class="build-icon">⚙️</div>
+      <h2>Building your contact center…</h2>
+      <p id="build-ctx">Applying your configuration</p>
+    </div>
+    <div class="prog-track"><div class="prog-bar" id="prog-bar"></div></div>
+    <div class="build-list" id="build-list"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     ADMIN SHELL
+════════════════════════════════════ -->
+<div class="shell">
+
+  <!-- Skinny nav -->
+  <nav class="shell-nav">
+    <!-- Dialpad logo -->
+    <div class="nav-logo">
+      <svg viewBox="0 0 24 24" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="dpg" x1="-3.75" y1="-5.169" x2="24.75" y2="24.006" gradientUnits="userSpaceOnUse">
+            <stop offset=".06" stop-color="#10022C"/>
+            <stop offset=".2"  stop-color="#611F93"/>
+            <stop offset=".29" stop-color="#8223A1"/>
+            <stop offset=".37" stop-color="#9325A5"/>
+            <stop offset=".46" stop-color="#C52599" stop-opacity=".9"/>
+            <stop offset=".56" stop-color="#D52C86"/>
+            <stop offset=".66" stop-color="#EA2F6F"/>
+            <stop offset=".74" stop-color="#F64850"/>
+            <stop offset=".9"  stop-color="#FD6D2D"/>
+            <stop offset=".96" stop-color="#FF9E0E" stop-opacity=".95"/>
+          </linearGradient>
+        </defs>
+        <path d="M20.4.006H3.6a3.6 3.6 0 0 0-3.6 3.6v16.8a3.6 3.6 0 0 0 3.6 3.6h16.8a3.6 3.6 0 0 0 3.6-3.6v-16.8a3.6 3.6 0 0 0-3.6-3.6Z" fill="#10022C"/>
+        <path d="M20.4.006H3.6a3.6 3.6 0 0 0-3.6 3.6v16.8a3.6 3.6 0 0 0 3.6 3.6h16.8a3.6 3.6 0 0 0 3.6-3.6v-16.8a3.6 3.6 0 0 0-3.6-3.6Z" fill="url(#dpg)"/>
+        <path d="M12.788 7.473c.127-.057.1-.276-.035-.306-2.02-.448-3.592-2.236-3.93-4.479-.021-.148-.284-.184-.338-.044-.87 2.68-2.752 4.777-5.256 5.8-.122.057-.097.26.034.292 1.972.474 3.503 2.23 3.846 4.429.023.145.263.178.318.042 1.003-2.804 2.922-4.91 5.361-5.734Z" fill="#F8F7F6"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.135 20.706c-2.583 0-4.438-2.068-4.438-4.898 0-2.83 1.855-4.88 4.438-4.88 1.2 0 2.346.599 2.855 1.379V7.264h2.11v13.26h-2.11V19.31c-.509.78-1.655 1.397-2.855 1.397Zm.345-1.832c1.364 0 2.383-1.052 2.51-2.485V15.19c-.127-1.433-1.146-2.43-2.51-2.43-1.527 0-2.619 1.215-2.619 3.029 0 1.814 1.091 3.084 2.62 3.084Z" fill="#F8F7F6"/>
+      </svg>
+    </div>
+    <div class="nav-icons">
+      <div class="nav-icon" title="Home">
+        <svg viewBox="0 0 12 12"><path d="M6 1.5l-5 4V11h3.5V8h3v3H11V5.5z"/></svg>
+      </div>
+      <div class="nav-icon active" title="Admin Settings">
+        <svg viewBox="0 0 12 12"><path fill-rule="evenodd" d="M5.5 1a.5.5 0 0 1 .488.39l.3 1.2a3.5 3.5 0 0 1 .85.49l1.16-.39a.5.5 0 0 1 .59.23l1 1.73a.5.5 0 0 1-.12.64l-.94.75v.98l.94.75a.5.5 0 0 1 .12.64l-1 1.73a.5.5 0 0 1-.59.23l-1.16-.39a3.5 3.5 0 0 1-.85.49l-.3 1.2A.5.5 0 0 1 5.5 12h-1a.5.5 0 0 1-.49-.39l-.3-1.2a3.5 3.5 0 0 1-.85-.49l-1.16.39a.5.5 0 0 1-.59-.23l-1-1.73a.5.5 0 0 1 .12-.64l.94-.75V6.1l-.94-.75a.5.5 0 0 1-.12-.64l1-1.73a.5.5 0 0 1 .59-.23l1.16.39a3.5 3.5 0 0 1 .85-.49l.3-1.2A.5.5 0 0 1 4.5 1h1ZM5 4.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/></svg>
+      </div>
+      <div class="nav-icon" title="AI Agents">
+        <svg width="14" height="16" viewBox="0 0 14 16" xmlns="http://www.w3.org/2000/svg"><path d="M13.8824 7.32705C14.0644 7.24206 14.0258 6.91592 13.8311 6.87124C10.9225 6.20347 8.65803 3.53926 8.17241 0.196952C8.14025-0.0243791 7.7623-0.0769954 7.68407 0.131337C6.43151 4.1243 3.72072 7.24964 0.113845 8.77322C-0.0614008 8.85916-0.025849 9.16279 0.162416 9.20958C3.00342 9.9156 5.20872 12.532 5.7026 15.809C5.73518 16.0251 6.0818 16.074 6.16082 15.8715C7.60456 11.6933 10.3696 8.55468 13.8824 7.32705Z" fill="currentColor"/></svg>
+      </div>
+      <div class="nav-icon" title="Live Dashboard">
+        <svg viewBox="0 0 12 12"><path fill-rule="evenodd" d="M4.5 1a.5.5 0 0 1 .474.342L7.5 8.919l1.026-3.077A.5.5 0 0 1 9 5.5h2a.5.5 0 0 1 0 1H9.36l-1.386 4.158a.5.5 0 0 1-.948 0L4.5 3.081 3.474 6.158A.5.5 0 0 1 3 6.5H1a.5.5 0 0 1 0-1h1.64l1.386-4.158A.5.5 0 0 1 4.5 1Z"/></svg>
+      </div>
+      <div class="nav-icon" title="Analytics">
+        <svg viewBox="0 0 12 12"><path fill-rule="evenodd" d="M9.5 1a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0v-9a.5.5 0 0 1 .5-.5Zm-3 3a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5Zm-3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5Z"/></svg>
+      </div>
+    </div>
+    <!-- Avatar at bottom -->
+    <div style="width:32px;height:32px;border-radius:50%;background:rgba(139,92,246,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#C4B5FD;">SL</div>
+  </nav>
+
+  <!-- Main column -->
+  <div class="shell-main">
+
+    <!-- Header -->
+    <header class="shell-header">
+      <div class="shell-header-left">
+        <span class="breadcrumb">Admin</span>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-cur" id="header-title">Contact Centers</span>
+        <span class="header-badge" id="header-badge">Agentic Setup</span>
+      </div>
+      <div class="header-avatar">SL</div>
+    </header>
+
+    <!-- Page content -->
+    <div class="page">
+
+      <!-- ── VIEW: HOME ── -->
+      <div class="view active" id="view-home">
+        <div class="home-content">
+
+          <!-- Hero -->
+          <div class="hero-card">
+            <div class="hero-eyebrow">✦ Agentic Admin — Beta</div>
+            <h1>Set up your contact center <em>in minutes,</em> not months</h1>
+            <p>Answer 5 questions. Dialpad's AI configures your IVR, routing, queues, hours, and coaching automatically.</p>
+            <div class="hero-actions">
+              <button class="btn-pri" onclick="goSetup()">✦ &nbsp;Set up with AI</button>
+              <button class="btn-sec" onclick="goManage()">Manage existing →</button>
+            </div>
+            <div class="hero-stats">
+              <div class="h-stat">
+                <div class="h-stat-val">&lt;5 min</div>
+                <div class="h-stat-lbl">Setup time<br>with AI</div>
+              </div>
+              <div class="h-stat">
+                <div class="h-stat-val">3–8 wks</div>
+                <div class="h-stat-lbl">Without AI<br>(typical)</div>
+              </div>
+              <div class="h-stat">
+                <div class="h-stat-val">47+</div>
+                <div class="h-stat-lbl">Manual steps<br>automated</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature cards -->
+          <div class="home-section-title">Agentic Admin — Roadmap</div>
+          <div class="feature-row">
+            <div class="feature-card primary" onclick="goSetup()">
+              <div class="fc-icon" style="background:#EDE9FE;">✦</div>
+              <div class="fc-title">Pillar 1 — Agentic Setup</div>
+              <div class="fc-desc">Answer 5 questions. AI configures your entire contact center automatically — IVR, routing, queues, hours, coaching.</div>
+              <span class="fc-badge">Try it now →</span>
+            </div>
+            <div class="feature-card" onclick="goManage()">
+              <div class="fc-icon" style="background:#D1FAE5;">🔄</div>
+              <div class="fc-title">Pillar 2 — Agentic Ops</div>
+              <div class="fc-desc">Bulk updates via plain language. "Change all queues to holiday hours Dec 23–27" — AI previews and applies.</div>
+              <span class="fc-badge">Explore →</span>
+            </div>
+            <div class="feature-card">
+              <div class="fc-icon" style="background:#DBEAFE;">👁️</div>
+              <div class="fc-title">Pillar 3 — Agentic Supervisor</div>
+              <div class="fc-desc">AI monitors queue health and acts proactively — pulls agents, adjusts routing, alerts on SLA risk.</div>
+              <span class="fc-badge" style="background:#DBEAFE;color:#1D4ED8;">Coming soon</span>
+            </div>
+          </div>
+
+          <!-- Competitive table -->
+          <div class="home-section-title" style="margin-top:8px;">Competitive landscape — AI onboarding</div>
+          <div class="compare-card">
+            <table>
+              <thead>
+                <tr>
+                  <th>Vendor</th>
+                  <th>AI-guided setup</th>
+                  <th>Conversational config</th>
+                  <th>Adapts to your business</th>
+                  <th>Full CCaaS + AI native</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Dialpad</strong></td>
+                  <td><span class="tag-ai">✦ Yes (AI)</span></td>
+                  <td><span class="tag-ai">✦ Yes — conversational</span></td>
+                  <td><span class="tag-ai">✦ Yes — learns your biz</span></td>
+                  <td><span class="tag-yes">✓ Yes</span></td>
+                </tr>
+                <tr>
+                  <td>Talkdesk Express</td>
+                  <td><span class="tag-partial">~ Step-by-step wizard</span></td>
+                  <td><span class="tag-no">✗ Pre-canned templates</span></td>
+                  <td><span class="tag-no">✗ Generic only</span></td>
+                  <td><span class="tag-partial">~ Limited</span></td>
+                </tr>
+                <tr>
+                  <td>RingCX</td>
+                  <td><span class="tag-partial">~ Fast deploy claim</span></td>
+                  <td><span class="tag-no">✗ No</span></td>
+                  <td><span class="tag-no">✗ No</span></td>
+                  <td><span class="tag-no">✗ No</span></td>
+                </tr>
+                <tr>
+                  <td>Genesys</td>
+                  <td><span class="tag-no">✗ Professional services only</span></td>
+                  <td><span class="tag-no">✗ No</span></td>
+                  <td><span class="tag-no">✗ No</span></td>
+                  <td><span class="tag-partial">~ CCaaS only (no UC)</span></td>
+                </tr>
+                <tr>
+                  <td>NICE CXone</td>
+                  <td><span class="tag-no">✗ No</span></td>
+                  <td><span class="tag-no">✗ No</span></td>
+                  <td><span class="tag-no">✗ No</span></td>
+                  <td><span class="tag-partial">~ CCaaS only</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── VIEW: CHAT (Setup Wizard) ── -->
+      <div class="view" id="view-chat">
+        <div class="chat-view">
+          <!-- Step sidebar -->
+          <div class="chat-sidebar">
+            <div class="chat-sidebar-title">Setup Steps</div>
+            <div id="step-list"></div>
+          </div>
+          <!-- Chat -->
+          <div class="chat-main">
+            <div class="chat-topbar">
+              <div class="chat-topbar-left">
+                <div class="chat-ai-dot"></div>
+                <span id="chat-step-title">Agentic Setup</span>
+              </div>
+              <button class="btn-ghost" onclick="goHome()">← Back</button>
+            </div>
+            <div class="chat-msgs" id="chat-msgs"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── VIEW: RESULT ── -->
+      <div class="view" id="view-result">
+        <div class="result-content">
+          <div class="result-hero">
+            <div class="rh-left">
+              <h2 id="r-title">Contact center ready ✓</h2>
+              <p  id="r-sub">Configured automatically</p>
+            </div>
+            <div class="rh-badge">
+              <div class="rh-time">2:34</div>
+              <div class="rh-lbl">Setup time</div>
+            </div>
+          </div>
+
+          <div class="vs-card">
+            <div class="vs-col">
+              <span class="vs-lbl">With AI</span>
+              <span class="vs-ai">2 min 34 sec</span>
+              <span class="vs-sub">5 questions</span>
+            </div>
+            <div class="vs-arrow">→</div>
+            <div class="vs-col">
+              <span class="vs-lbl">Without AI</span>
+              <span class="vs-old" id="r-manual-time">1–2 weeks</span>
+              <span class="vs-sub" id="r-manual-steps">47 steps</span>
+            </div>
+            <div class="vs-msg">No IT team. No consultant. No documentation to read. Describe your business — Dialpad configures the rest automatically.</div>
+          </div>
+
+          <div class="cfg-grid" id="cfg-grid"></div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn-pri" onclick="goManage()">Manage with AI →</button>
+            <button class="btn-ghost" onclick="goHome()">← Start over</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── VIEW: MANAGE ── -->
+      <div class="view" id="view-manage">
+        <div class="manage-content">
+          <div style="margin-bottom:16px;">
+            <button class="btn-ghost" onclick="goBackFromManage()">← Back</button>
+          </div>
+          <div class="manage-hed">
+            <h2>✦ &nbsp;Agentic Ops — Pillar 2</h2>
+            <p>Make bulk changes across your contact center in plain language. AI previews every change before applying.</p>
+          </div>
+
+          <div class="cmd-box">
+            <span class="cmd-star">✦</span>
+            <input id="cmd-inp" class="cmd-input" type="text" placeholder="Tell Agentic Admin what to change…" />
+            <button class="btn-apply" onclick="runCmd()">Preview changes</button>
+          </div>
+
+          <div class="sugs">
+            <button class="sug" onclick="setSug(0)">🗓 Change to holiday hours Dec 23–27</button>
+            <button class="sug" onclick="setSug(1)">➕ Add a Referrals queue</button>
+            <button class="sug" onclick="setSug(2)">🔄 Set lunch break for all agents</button>
+          </div>
+
+          <div class="preview-panel" id="preview-panel">
+            <div class="pp-head">
+              <h3 id="pp-title">Preview changes</h3>
+              <span class="pp-badge" id="pp-badge">0 changes</span>
+            </div>
+            <div class="pp-list" id="pp-list"></div>
+            <div class="pp-footer">
+              <button class="btn-confirm" onclick="applyCmd()">Confirm &amp; apply</button>
+              <button class="btn-cancel" onclick="cancelCmd()">Cancel</button>
+            </div>
+          </div>
+
+          <div class="success-bar" id="success-bar">
+            ✅ &nbsp;Changes applied. Your contact center has been updated.
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page -->
+  </div><!-- /shell-main -->
+</div><!-- /shell -->
+
+<script>
+/* ─── STATE ─── */
+const S = { answers:{}, qi:0, multiSel:[], config:null };
+
+/* ─── QUESTIONS ─── */
+const QS = [
+  {
+    id: 'industry',
+    msg: "Hi! I'm Dialpad's setup assistant. I'll configure your contact center — just a few quick questions. What type of business are you?",
+    type: 'single',
+    opts: [
+      {v:'healthcare',   l:'🏥 Healthcare'},
+      {v:'financial',    l:'🏦 Financial Services'},
+      {v:'retail',       l:'🛍️ Retail & E-commerce'},
+      {v:'technology',   l:'💻 Technology'},
+      {v:'professional', l:'📋 Professional Services'},
+      {v:'other',        l:'🏢 Other'}
+    ]
+  },
+  {
+    id: 'agentCount',
+    msg: 'Got it. How many agents will be handling customer calls?',
+    type: 'single',
+    opts:[{v:'1-10',l:'1–10 agents'},{v:'11-25',l:'11–25 agents'},{v:'26-100',l:'26–100 agents'},{v:'100+',l:'100+ agents'}]
+  },
+  {
+    id: 'reasons',
+    msg: 'What do customers mainly contact you about? Select all that apply.',
+    type: 'multi',
+    optsFn: a => ({
+      healthcare:   [{v:'appt',l:'Appointment scheduling'},{v:'billing',l:'Billing & insurance'},{v:'clinical',l:'Clinical questions'},{v:'rx',l:'Prescription refills'},{v:'general',l:'General inquiries'}],
+      financial:    [{v:'acct',l:'Account inquiries'},{v:'loans',l:'Loan & credit'},{v:'fraud',l:'Fraud & disputes'},{v:'pay',l:'Payments & transfers'},{v:'general',l:'General support'}],
+      retail:       [{v:'orders',l:'Order status'},{v:'returns',l:'Returns & exchanges'},{v:'products',l:'Product questions'},{v:'shipping',l:'Shipping issues'},{v:'general',l:'General inquiries'}],
+      technology:   [{v:'support',l:'Technical support'},{v:'billing',l:'Account & billing'},{v:'onboard',l:'Onboarding help'},{v:'bugs',l:'Bug reports'},{v:'general',l:'General inquiries'}],
+      professional: [{v:'appt',l:'Appointment booking'},{v:'inq',l:'New client inquiries'},{v:'billing',l:'Billing questions'},{v:'docs',l:'Document requests'},{v:'general',l:'General inquiries'}],
+      other:        [{v:'sales',l:'Sales inquiries'},{v:'support',l:'Customer support'},{v:'billing',l:'Billing questions'},{v:'tech',l:'Technical issues'},{v:'general',l:'General inquiries'}]
+    })[a.industry] || [{v:'support',l:'Customer support'},{v:'billing',l:'Billing'},{v:'general',l:'General'}]
+  },
+  {
+    id: 'hours',
+    msg: 'What are your operating hours?',
+    type: 'single',
+    opts:[
+      {v:'standard', l:'🕘 Mon–Fri, 9am–5pm'},
+      {v:'extended', l:'🕗 Mon–Fri, extended (8am–8pm)'},
+      {v:'weekend',  l:'📅 Mon–Sat, 9am–6pm'},
+      {v:'24x7',     l:'🔁 24/7'}
+    ]
+  },
+  {
+    id: 'queueType',
+    msg: 'Last one — separate queues per contact reason, or one shared queue?',
+    type: 'single',
+    opts:[{v:'separate',l:'🔀 Separate queues per team'},{v:'single',l:'👥 One shared queue'}]
+  }
+];
+
+const STEP_LABELS = ['Business type','Team size','Contact reasons','Operating hours','Queue setup'];
+
+/* ─── VIEW NAVIGATION ─── */
+const VIEWS = ['home','chat','result','manage'];
+function showView(id) {
+  VIEWS.forEach(v => document.getElementById('view-'+v).classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  // Update header
+  const titles = {home:'Contact Centers', chat:'Agentic Setup', result:'Setup Complete', manage:'Agentic Ops'};
+  const badges = {home:'Agentic Admin', chat:'Step '+(S.qi+1)+' of 5', result:'Done', manage:'Pillar 2'};
+  document.getElementById('header-title').textContent = titles[id] || 'Admin';
+  document.getElementById('header-badge').textContent = badges[id] || '';
+}
+
+function goHome()   { showView('home'); }
+function goSetup()  {
+  S.answers={}; S.qi=0; S.multiSel=[];
+  document.getElementById('chat-msgs').innerHTML = '';
+  buildStepList();
+  showView('chat');
+  setTimeout(() => askQ(0), 300);
+}
+function goManage() {
+  document.getElementById('cmd-inp').value = '';
+  document.getElementById('preview-panel').classList.remove('vis');
+  document.getElementById('success-bar').classList.remove('vis');
+  showView('manage');
+}
+function goBackFromManage() { S.config ? showView('result') : goHome(); }
+
+/* ─── STEP LIST ─── */
+function buildStepList() {
+  document.getElementById('step-list').innerHTML = QS.map((q,i) =>
+    `<div class="step-row" id="sr-${i}">
+      <div class="step-num" id="sn-${i}">${i+1}</div>
+      <div class="step-label">${STEP_LABELS[i]}</div>
+    </div>`
+  ).join('');
+  setStep(0);
+}
+function setStep(cur) {
+  QS.forEach((_,i) => {
+    const row = document.getElementById('sr-'+i);
+    const num  = document.getElementById('sn-'+i);
+    if (!row) return;
+    row.className = 'step-row' + (i<cur?' done': i===cur?' active':'');
+    num.textContent = i < cur ? '✓' : (i+1);
+  });
+  const titles = STEP_LABELS;
+  const el = document.getElementById('chat-step-title');
+  if (el) el.textContent = titles[cur] || 'Almost done…';
+  // Update header badge
+  document.getElementById('header-badge').textContent = `Step ${cur+1} of 5`;
+}
+
+/* ─── CHAT ENGINE ─── */
+const msgs = () => document.getElementById('chat-msgs');
+function scrollD() { const m=msgs(); m.scrollTop=m.scrollHeight; }
+
+/* FIX: append ALL children, not just first */
+function appendHtml(html) {
+  const wrap = document.createElement('div');
+  wrap.innerHTML = html.trim();
+  const m = msgs();
+  const first = wrap.firstElementChild;
+  while (wrap.firstElementChild) { m.appendChild(wrap.firstElementChild); }
+  scrollD();
+  return first;
+}
+
+function showTyping() {
+  removeTyping();
+  appendHtml(`<div class="typing-wrap msg-appear" id="typing-ind">
+    <div class="ai-avatar">✦</div>
+    <div class="typing-bubble"><div class="td"></div><div class="td"></div><div class="td"></div></div>
+  </div>`);
+}
+function removeTyping() { const t=document.getElementById('typing-ind'); if(t)t.remove(); }
+
+function addAiMsg(text) {
+  removeTyping();
+  appendHtml(`<div class="ai-msg msg-appear">
+    <div class="ai-avatar">✦</div>
+    <div class="ai-bubble">${text}</div>
+  </div>`);
+}
+function addUserMsg(text) {
+  appendHtml(`<div class="user-msg msg-appear">
+    <div class="user-bubble">${text}</div>
+  </div>`);
+}
+
+/* ─── QUESTIONS ─── */
+function askQ(i) {
+  if (i >= QS.length) { finishChat(); return; }
+  setStep(i);
+  const q = QS[i];
+  const opts = q.optsFn ? q.optsFn(S.answers) : q.opts;
+  showTyping();
+  setTimeout(() => {
+    addAiMsg(q.msg);
+    if (q.type === 'single') renderSingle(i, opts);
+    else { S.multiSel = []; renderMulti(i, opts); }
+  }, 700);
+}
+
+function renderSingle(qi, opts) {
+  /* Use this.textContent in onclick to avoid HTML escaping issues with & etc */
+  appendHtml(`<div class="opts-group msg-appear" id="opts-${qi}">
+    ${opts.map(o => `<button class="opt-chip" onclick="pickSingle(${qi},'${o.v}',this)">${o.l}</button>`).join('')}
+  </div>`);
+}
+
+function renderMulti(qi, opts) {
+  /* Wrap both divs in ONE parent so appendHtml gets a single root */
+  appendHtml(`<div class="msg-appear">
+    <div class="opts-group" id="opts-${qi}" style="margin-bottom:8px;">
+      ${opts.map(o => `<button class="opt-chip" onclick="toggleMulti(${qi},'${o.v}',this)">${o.l}</button>`).join('')}
+    </div>
+    <div class="continue-row" id="cr-${qi}" style="display:none">
+      <button class="btn-next" onclick="confirmMulti(${qi})">Continue →</button>
+    </div>
+  </div>`);
+}
+
+function lockOpts(qi) {
+  const el = document.getElementById('opts-'+qi);
+  if (el) el.querySelectorAll('.opt-chip').forEach(b => b.classList.add('locked'));
+}
+
+function pickSingle(qi, val, btn) {
+  lockOpts(qi);
+  btn.classList.add('selected');
+  S.answers[QS[qi].id] = val;
+  addUserMsg(btn.textContent.trim());
+  S.qi = qi + 1;
+  setTimeout(() => askQ(S.qi), 500);
+}
+
+function toggleMulti(qi, val, btn) {
+  btn.classList.toggle('selected');
+  const existing = S.multiSel.findIndex(x => x.v === val);
+  if (btn.classList.contains('selected')) {
+    if (existing < 0) S.multiSel.push({v:val, l:btn.textContent.trim()});
+  } else {
+    if (existing >= 0) S.multiSel.splice(existing, 1);
+  }
+  const cr = document.getElementById('cr-'+qi);
+  if (cr) cr.style.display = S.multiSel.length ? 'block' : 'none';
+}
+
+function confirmMulti(qi) {
+  if (!S.multiSel.length) return;
+  lockOpts(qi);
+  const cr = document.getElementById('cr-'+qi);
+  if (cr) cr.style.display = 'none';
+  S.answers[QS[qi].id] = S.multiSel.map(x => x.l);
+  addUserMsg(S.multiSel.map(x => x.l).join(', '));
+  S.qi = qi + 1;
+  setTimeout(() => askQ(S.qi), 500);
+}
+
+function finishChat() {
+  showTyping();
+  setTimeout(() => {
+    addAiMsg("Perfect. I have everything I need — give me a moment to build your contact center…");
+    setTimeout(startBuilding, 1000);
+  }, 700);
+}
+
+/* ─── BUILDING ANIMATION ─── */
+function startBuilding() {
+  const cfg = makeConfig();
+  S.config = cfg;
+
+  const steps = [
+    {icon:'🔍', txt:`Analyzing your ${cfg.industry} business profile`},
+    {icon:'📞', txt:`Creating IVR menu: ${cfg.ivrSummary}`},
+    {icon:'⚡', txt:`Setting up ${cfg.queues.length} routing queue${cfg.queues.length>1?'s':''}`},
+    {icon:'🔀', txt:`Configuring ${cfg.routing.toLowerCase()}`},
+    {icon:'🕐', txt:`Setting business hours: ${cfg.hoursShort}`},
+    {icon:'📋', txt:`Loading ${cfg.playbooks.length} ${cfg.industry.toLowerCase()} AI playbooks`},
+    {icon:'⭐', txt:`Enabling AI CSAT & quality scoring`},
+    {icon:'🎯', txt:`Activating real-time coaching`}
+  ];
+
+  document.getElementById('build-ctx').textContent = `${cfg.industry} · ${cfg.agentCount} agents`;
+  document.getElementById('build-list').innerHTML = steps.map((s,i) =>
+    `<div class="bs" id="bs-${i}">
+      <div class="bs-ico" id="bi-${i}">${s.icon}</div>
+      <div class="bs-txt">${s.txt}</div>
+      <div class="bs-ck">✓</div>
+    </div>`).join('');
+
+  document.getElementById('building-overlay').classList.add('vis');
+
+  let i = 0;
+  const tick = () => {
+    if (i >= steps.length) {
+      // Mark last step done
+      document.getElementById('bs-'+(steps.length-1))?.classList.add('done');
+      const lastIco = document.getElementById('bi-'+(steps.length-1));
+      if (lastIco) lastIco.textContent = '✓';
+
+      setTimeout(() => {
+        // Navigate FIRST while overlay still covers the screen (no flash of chat view)
+        showResult(cfg);
+        // Then fade the overlay out to reveal the result
+        const ov = document.getElementById('building-overlay');
+        ov.style.transition = 'opacity 0.4s ease';
+        ov.style.opacity = '0';
+        setTimeout(() => {
+          ov.classList.remove('vis');
+          ov.style.opacity = '';
+          ov.style.transition = '';
+        }, 420);
+      }, 600);
+      return;
+    }
+    document.getElementById('bs-'+i)?.classList.add('vis');
+    if (i > 0) {
+      document.getElementById('bs-'+(i-1))?.classList.add('done');
+      const ico = document.getElementById('bi-'+(i-1));
+      if (ico) ico.textContent = '✓';
+    }
+    document.getElementById('prog-bar').style.width = ((i+1)/steps.length*100)+'%';
+    i++;
+    setTimeout(tick, 650);
+  };
+  setTimeout(tick, 300);
+}
+
+/* ─── CONFIG ─── */
+function makeConfig() {
+  const a = S.answers;
+  const nm = {healthcare:'Healthcare',financial:'Financial Services',retail:'Retail',technology:'Technology',professional:'Professional Services',other:'Business'};
+  const hl = {standard:'Mon–Fri, 9:00 AM – 5:00 PM',extended:'Mon–Fri, 8:00 AM – 8:00 PM',weekend:'Mon–Sat, 9:00 AM – 6:00 PM','24x7':'24/7, all days'};
+  const hs = {standard:'Mon–Fri 9–5',extended:'Mon–Fri 8–8',weekend:'Mon–Sat 9–6','24x7':'24/7'};
+  const pm = {
+    healthcare:   ['HIPAA compliance check','Appointment confirmation script','After-hours emergency routing'],
+    financial:    ['Fraud verification protocol','Compliance disclosure script','Secure transfer authorization'],
+    retail:       ['Return policy walkthrough','Order lookup flow','Escalation to manager'],
+    technology:   ['Tier 1 troubleshooting checklist','Escalation to Tier 2','Bug report collection'],
+    professional: ['New client intake questionnaire','Quote confirmation flow','Follow-up scheduling'],
+    other:        ['Standard support script','Escalation protocol','Follow-up workflow']
+  };
+
+  const industry  = nm[a.industry] || 'Business';
+  const reasons   = a.reasons || ['Customer support'];
+  const queues    = a.queueType === 'separate' ? reasons.slice(0,3) : ['General Support'];
+  const routing   = ['26-100','100+'].includes(a.agentCount) ? 'Skills-based routing' : 'Round-robin routing';
+  const ivrSummary = reasons.slice(0,3).map((r,i)=>`${i+1}→${r.split(' ')[0]}`).join(', ');
+  const stepsManual = 32 + reasons.length*4 + (a.queueType==='separate'?reasons.length*5:0);
+  const timeManual  = a.hours==='24x7' ? '3–6 weeks' : a.queueType==='separate' ? '1–2 weeks' : '3–5 days';
+
+  return { industry, agentCount:a.agentCount||'1-10', reasons, queues, routing,
+    hoursLabel:hl[a.hours]||hl.standard, hoursShort:hs[a.hours]||hs.standard,
+    playbooks:(pm[a.industry]||pm.other), ivrSummary, stepsManual, timeManual, is24x7:a.hours==='24x7' };
+}
+
+/* ─── RESULT VIEW ─── */
+function showResult(cfg) {
+  showView('result');
+  document.getElementById('r-title').textContent = `${cfg.industry} contact center ready ✓`;
+  document.getElementById('r-sub').textContent   = `${cfg.queues.length} queue${cfg.queues.length>1?'s':''} · ${cfg.agentCount} agents · ${cfg.routing}`;
+  document.getElementById('r-manual-time').textContent  = cfg.timeManual;
+  document.getElementById('r-manual-steps').textContent = `${cfg.stepsManual} manual steps`;
+
+  const ivrItems = cfg.reasons.slice(0,4).map((r,i)=>`Press ${i+1}: ${r}`);
+  const hoursItems = [cfg.hoursLabel,'After-hours voicemail enabled'];
+  if (!cfg.is24x7) hoursItems.push('Emergency escalation routing');
+
+  const cards = [
+    {icon:'📞',bg:'#EDE9FE',name:'IVR Menu',     cnt:`${ivrItems.length} options`,       items:ivrItems},
+    {icon:'⚡',bg:'#DBEAFE',name:'Routing Queues',cnt:`${cfg.queues.length} queue${cfg.queues.length>1?'s':''}`,items:cfg.queues},
+    {icon:'🕐',bg:'#D1FAE5',name:'Business Hours',cnt:'Configured',                      items:hoursItems},
+    {icon:'📋',bg:'#FEF3C7',name:'AI Playbooks',  cnt:`${cfg.playbooks.length} loaded`,   items:cfg.playbooks},
+    {icon:'⭐',bg:'#FCE7F3',name:'Quality & AI',  cnt:'Pre-configured',                  items:['AI CSAT (survey-free)','AI Scorecards ready','Real-time coaching on','Sentiment tracking active']},
+    {icon:'🔀',bg:'#E0F2FE',name:'Routing',       cnt:cfg.routing,                       items:[cfg.routing,`${cfg.agentCount} agents assigned`,'Skills tags auto-generated','Overflow routing configured']}
+  ];
+
+  document.getElementById('cfg-grid').innerHTML = cards.map(c=>`
+    <div class="cfg-card">
+      <div class="cfg-head">
+        <div class="cfg-ico" style="background:${c.bg}">${c.icon}</div>
+        <div><div class="cfg-name">${c.name}</div><div class="cfg-cnt">${c.cnt}</div></div>
+      </div>
+      <div class="cfg-items">${c.items.slice(0,4).map(x=>`<div class="cfg-item">${x}</div>`).join('')}</div>
+    </div>`).join('');
+}
+
+/* ─── MANAGE ─── */
+const SUGS = [
+  {
+    text:'Change all queues to holiday hours December 23–27',
+    title:'Apply holiday hours Dec 23–27',
+    changes:[
+      {t:'update',d:'Scheduling Queue — Update to Closed, Dec 23–27'},
+      {t:'update',d:'Billing Queue — Update to Closed, Dec 23–27'},
+      {t:'update',d:'Clinical Support Queue — Emergency only, Dec 23–27'},
+      {t:'update',d:'IVR greeting — Switch to holiday message Dec 23–27'}
+    ]
+  },
+  {
+    text:'Add a new Referrals queue with 3 agents',
+    title:'Create Referrals queue',
+    changes:[
+      {t:'create',d:'New queue created: "Referrals"'},
+      {t:'update',d:'Assign 3 available agents to Referrals queue'},
+      {t:'update',d:'IVR Menu — Add "Press 4 for Referrals"'},
+      {t:'create',d:'AI Scorecard auto-generated for Referrals queue'}
+    ]
+  },
+  {
+    text:'Set lunch break schedule for all agents Mon–Fri 12–1pm',
+    title:'Apply lunch break schedule',
+    changes:[
+      {t:'update',d:'All agents — Set "On Break" Mon–Fri, 12:00–1:00 PM'},
+      {t:'update',d:'All queues — Overflow to voicemail 12:00–1:00 PM'},
+      {t:'notify',d:'All agents notified of updated schedule'}
+    ]
+  }
+];
+
+function setSug(i) {
+  document.getElementById('cmd-inp').value = SUGS[i].text;
+  document.getElementById('cmd-inp').focus();
+}
+
+function runCmd() {
+  const val = document.getElementById('cmd-inp').value.trim();
+  if (!val) return;
+  document.getElementById('success-bar').classList.remove('vis');
+  let m = SUGS[2];
+  if (/holiday|dec/i.test(val))   m = SUGS[0];
+  if (/referral|queue/i.test(val)) m = SUGS[1];
+  if (/lunch|break/i.test(val))   m = SUGS[2];
+
+  document.getElementById('pp-title').textContent = m.title;
+  document.getElementById('pp-badge').textContent = `${m.changes.length} changes`;
+  document.getElementById('pp-list').innerHTML = m.changes.map(c=>
+    `<div class="pchange">
+      <span class="ptype ${c.t}">${c.t}</span>
+      <span class="pdesc">${c.d}</span>
+    </div>`).join('');
+  document.getElementById('preview-panel').classList.add('vis');
+}
+function applyCmd() {
+  document.getElementById('preview-panel').classList.remove('vis');
+  document.getElementById('success-bar').classList.add('vis');
+  document.getElementById('cmd-inp').value = '';
+}
+function cancelCmd() { document.getElementById('preview-panel').classList.remove('vis'); }
+
+document.getElementById('cmd-inp').addEventListener('keydown', e => { if(e.key==='Enter') runCmd(); });
+</script>
+</body>
+</html>

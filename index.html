@@ -922,45 +922,51 @@ const SUGS = [
 
 const BULK_SCENARIOS = [
   {
-    text: 'Enable call recording across all contact centers',
-    emoji: '🔴',
-    scope: '47 contact centers · All regions',
+    text: 'Set up contact centers for 3 regional offices',
+    emoji: '🏢',
+    scope: 'Creating 3 new contact centers',
+    ccs: ['US East Office CC', 'US West Office CC', 'Canada Office CC'],
     changes: [
-      {t:'update', d:'Enable automatic call recording — 47 CCs'},
-      {t:'update', d:'Add recording disclosure to IVR greeting'},
-      {t:'notify', d:'All supervisors notified of updated recording policy'},
+      {t:'create', d:'US East Office CC — cloned from this setup'},
+      {t:'create', d:'US West Office CC — cloned from this setup'},
+      {t:'create', d:'Canada Office CC — cloned from this setup'},
+      {t:'update', d:'Business hours adjusted per timezone for each CC'},
+      {t:'update', d:'Region-specific IVR greeting configured for each'},
     ]
   },
   {
-    text: 'Apply holiday hours Dec 25 & Jan 1 to all contact centers',
-    emoji: '🗓',
-    scope: '47 contact centers · All regions',
+    text: 'Create separate contact centers for Sales, Support, and Billing',
+    emoji: '👥',
+    scope: 'Creating 3 new contact centers',
+    ccs: ['Sales Team CC', 'Customer Support CC', 'Billing & Accounts CC'],
     changes: [
-      {t:'update', d:'Set Closed schedule — Dec 25 (all 47 CCs)'},
-      {t:'update', d:'Set Closed schedule — Jan 1 (all 47 CCs)'},
-      {t:'update', d:'Switch IVR greeting to holiday message on those days'},
-      {t:'update', d:'Overflow to voicemail during closed hours'},
+      {t:'create', d:'Sales Team CC — outbound routing, lead queues'},
+      {t:'create', d:'Customer Support CC — cloned from this setup'},
+      {t:'create', d:'Billing & Accounts CC — payment handling queues'},
+      {t:'update', d:'Shared agent pool available across all 3 CCs'},
     ]
   },
   {
-    text: 'Enable AI transcription & CSAT scoring on all CCs',
-    emoji: '✦',
-    scope: '47 contact centers · All regions',
+    text: 'Clone this setup to quickly create 5 identical contact centers',
+    emoji: '📋',
+    scope: 'Cloning current setup × 5',
+    ccs: ['Contact Center 2', 'Contact Center 3', 'Contact Center 4', 'Contact Center 5', 'Contact Center 6'],
     changes: [
-      {t:'update', d:'Enable real-time AI transcription — 47 CCs'},
-      {t:'update', d:'Enable post-call CSAT survey — 47 CCs'},
-      {t:'update', d:'Enable PII redaction in all transcripts'},
-      {t:'create', d:'AI Scorecards auto-generated for each CC'},
+      {t:'create', d:'5 new contact centers — exact clone of current setup'},
+      {t:'update', d:'Each CC gets a unique name (auto-numbered)'},
+      {t:'notify', d:'You can rename and customize each one after creation'},
     ]
   },
   {
-    text: 'Standardize agent wrap-up time to 30 seconds across all CCs',
-    emoji: '⏱',
-    scope: '47 contact centers · All regions',
+    text: 'Set up contact centers for each product line or department',
+    emoji: '📦',
+    scope: 'Creating multiple new contact centers',
+    ccs: ['Product A Support CC', 'Product B Support CC', 'Enterprise CC'],
     changes: [
-      {t:'update', d:'Set wrap-up time: 30 seconds — 47 CCs'},
-      {t:'update', d:'Standardize after-call work window'},
-      {t:'notify', d:'All agents notified of updated wrap-up policy'},
+      {t:'create', d:'One CC per product line — I\'ll ask for names'},
+      {t:'update', d:'Dedicated IVR routing and queue per product'},
+      {t:'update', d:'AI Scorecard generated for each CC'},
+      {t:'notify', d:'Assign agents to each CC from your admin panel'},
     ]
   }
 ];
@@ -1218,7 +1224,7 @@ function switchToManageMode() {
     const sugIdx = label.includes('holiday') ? 0 : label.includes('Referral') ? 1 : label.includes('lunch') ? 2 : -1;
     const onclick = sugIdx >= 0 ? `setSug(${sugIdx})` : `setManualSug(${JSON.stringify(label)})`;
     return `<button class="sug-chip" onclick="${onclick}">${label}</button>`;
-  }).join('') + `<button class="sug-chip sug-chip-bulk" onclick="setManualSug('📋 Bulk admin: change settings across all contact centers')">📋 Bulk admin: update all contact centers at once</button>`;
+  }).join('') + `<button class="sug-chip sug-chip-bulk" onclick="setManualSug('📋 Set up more contact centers for other teams or offices')">📋 Set up more contact centers for other teams or offices</button>`;
 }
 
 function setManualSug(text) {
@@ -1243,7 +1249,7 @@ function setManualSug(text) {
   if (emoji === '📋') {
     setTimeout(() => {
       const t = document.getElementById(typingId); if(t) t.remove();
-      appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">I can apply changes across <strong>all 47 of your contact centers</strong> at once — no need to update each one individually. Preview and confirm before anything applies:</div></div>`);
+      appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">Need more than one contact center? I can set them up together — same guided setup, just rolled out to multiple CCs at once. What's your structure?</div></div>`);
       appendToArea(manageMsgs, `<div class="bulk-chip-row msg-appear">${BULK_SCENARIOS.map((s,i) => `<button class="bulk-quick-chip" onclick="runBulkPreview(${i})">${s.emoji} ${s.text}</button>`).join('')}</div>`);
     }, 800);
     return;
@@ -1457,12 +1463,12 @@ function runCmd() {
   appendToArea(manageMsgs, `<div class="user-msg msg-appear"><div class="user-bub">${val}</div></div>`);
 
   // Detect bulk ops request
-  if (/bulk|all contact center|all cc/i.test(val)) {
+  if (/bulk|more contact center|multiple cc|another cc|set up more|create more/i.test(val)) {
     const typingId = 'mt-' + Date.now();
     appendToArea(manageMsgs, `<div class="typing-wrap msg-appear" id="${typingId}"><div class="ai-av">✦</div><div class="typing-bub"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`);
     setTimeout(() => {
       const t = document.getElementById(typingId); if(t) t.remove();
-      appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">I can apply changes across <strong>all 47 of your contact centers</strong> at once. Here are some common bulk operations — or type a custom one:</div></div>`);
+      appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">Need more than one contact center? I can set them up together — same guided setup, just rolled out to multiple CCs at once. What's your structure?</div></div>`);
       appendToArea(manageMsgs, `<div class="bulk-chip-row msg-appear">${BULK_SCENARIOS.map((s,i) => `<button class="bulk-quick-chip" onclick="runBulkPreview(${i})">${s.emoji} ${s.text}</button>`).join('')}</div>`);
     }, 800);
     return;
@@ -1532,35 +1538,33 @@ function runBulkPreview(idx) {
   appendToArea(manageMsgs, `<div class="typing-wrap msg-appear" id="${typingId}"><div class="ai-av">✦</div><div class="typing-bub"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`);
 
   const pcId = 'pc-' + Date.now();
+  const ccCount = s.ccs.length;
   setTimeout(() => {
     const t = document.getElementById(typingId); if(t) t.remove();
-    appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">Scanned all <strong>47 contact centers</strong>. Found <strong>${s.changes.length} changes</strong> to apply. Review before confirming:</div></div>`);
+    appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">I'll create <strong>${ccCount} new contact centers</strong> based on your current setup. Review what will be created:</div></div>`);
     appendToArea(manageMsgs, `<div class="preview-card bulk-preview msg-appear" id="${pcId}">
       <div class="bulk-scope-banner">
         <span style="font-size:13px">${s.emoji}</span>
         <span class="bulk-scope-text"><strong>${s.scope}</strong></span>
-        <span class="bulk-scope-badge">Bulk · 47 CCs</span>
+        <span class="bulk-scope-badge">New · ${ccCount} CCs</span>
       </div>
       <div class="pc-list">${s.changes.map(c=>`<div class="pchange"><span class="ptype ${c.t}">${c.t}</span><span class="pdesc">${c.d}</span></div>`).join('')}</div>
       <div class="bulk-cc-preview">
-        <div class="bulk-cc-hdr">Affected contact centers</div>
-        <div class="bulk-cc-item"><span class="bulk-cc-dot"></span>Healthcare Support Center · US East</div>
-        <div class="bulk-cc-item"><span class="bulk-cc-dot"></span>Financial Services Center · US West</div>
-        <div class="bulk-cc-item"><span class="bulk-cc-dot"></span>Retail Support Center · Canada</div>
-        <div class="bulk-cc-more">+ 44 more contact centers</div>
+        <div class="bulk-cc-hdr">Contact centers to be created</div>
+        ${s.ccs.map(name => `<div class="bulk-cc-item"><span style="width:6px;height:6px;border-radius:50%;background:var(--dp-purple-mid);flex-shrink:0;display:inline-block"></span>${name}</div>`).join('')}
       </div>
       <div class="pc-footer">
-        <button class="btn-confirm" onclick="applyBulkCmd('${pcId}')">Confirm &amp; apply to all 47</button>
+        <button class="btn-confirm" onclick="applyBulkCmd('${pcId}', ${ccCount})">Confirm &amp; create ${ccCount} contact centers</button>
         <button class="btn-cancel-sm" onclick="cancelBulkCmd('${pcId}')">Cancel</button>
       </div>
     </div>`);
   }, 1000);
 }
 
-function applyBulkCmd(pcId) {
+function applyBulkCmd(pcId, count) {
   const pc = document.getElementById(pcId); if(pc) pc.remove();
   const manageMsgs = document.getElementById('manage-msgs');
-  appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">✅ Changes applied to all <strong>47 contact centers</strong>. All admins notified. <span style="color:var(--dp-text-3);font-size:11px">Revert available for 30 min.</span></div></div>`);
+  appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">✅ <strong>${count} new contact centers created</strong> and configured. You can find them in your admin panel — rename, adjust agents, or customise each one from there.</div></div>`);
 }
 
 function cancelBulkCmd(pcId) {

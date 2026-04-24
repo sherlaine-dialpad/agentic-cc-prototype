@@ -804,9 +804,15 @@ const QS = [
   },
   {
     id:'agentCount',
-    msg:'How many agents will be handling customer calls?',
+    msg:"How many agents will handle calls in this contact center?",
     type:'single',
-    opts:[{v:'1-10',l:'1–10 agents'},{v:'11-25',l:'11–25 agents'},{v:'26-100',l:'26–100 agents'},{v:'100+',l:'100+ agents'}]
+    opts:[
+      {v:'1-10',    l:'1–10 agents'},
+      {v:'11-25',   l:'11–25 agents'},
+      {v:'26-100',  l:'26–100 agents'},
+      {v:'100+',    l:'100+ agents'},
+      {v:'notAdded',l:"⏳ Haven't added agents to Dialpad yet"}
+    ]
   },
   {
     id:'reasons',
@@ -966,6 +972,19 @@ function fillGeneral(industryKey) {
 }
 
 function fillAgents(agentCount) {
+  if (agentCount === 'notAdded') {
+    document.getElementById('body-agents').innerHTML = `
+      <div style="background:var(--dp-amber-pale);border:1px solid rgba(245,158,11,0.4);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--dp-amber-dark);margin-bottom:3px">Agents not yet added to Dialpad</div>
+        <div style="font-size:12px;color:var(--dp-text-2);line-height:1.55">Your contact center routing and queues are configured. Once you've added agents to your Dialpad account, come back here to assign them to this contact center.</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="subsec-action" style="padding:6px 12px;border:1.5px solid var(--dp-purple);border-radius:var(--r-sm);font-size:12px;display:inline-flex;align-items:center;gap:5px" onclick="void(0)">+ Add agents in Dialpad admin →</button>
+      </div>`;
+    setBadge('agents','pending','⚠️ Action needed');
+    flashSection('agents');
+    return;
+  }
   const countMap = {'1-10':'8','11-25':'18','26-100':'45','100+':'120'};
   const n = parseInt(countMap[agentCount] || '10');
   const agents = [
@@ -1082,9 +1101,59 @@ function switchToManageMode() {
   document.getElementById('ai-panel-title').textContent = 'Agentic Ops';
   document.getElementById('ai-panel-badge').textContent = 'Pillar 2';
   document.getElementById('header-badge').textContent = 'Agentic Ops';
+
+  const agentsNotAdded = S.answers.agentCount === 'notAdded';
+
+  // Contextual greeting based on what's still pending
   const manageMsgs = document.getElementById('manage-msgs');
   manageMsgs.innerHTML = '';
-  appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">Your contact center is live and fully configured. Ask me to make changes in plain language — I'll preview everything before applying.</div></div>`);
+  const greeting = agentsNotAdded
+    ? "Your contact center is configured! One thing remaining: <strong>add agents to your Dialpad account</strong> and assign them here — I've flagged this in the Agents section. Ask me anything else to keep customising."
+    : "Your contact center is live and fully configured. Ask me to make changes in plain language — I'll preview everything before applying.";
+  appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">${greeting}</div></div>`);
+
+  // Build contextual suggestion chips
+  const chips = document.getElementById('sug-chips');
+  const extraChips = [
+    ...(agentsNotAdded ? ['👥 Add agents to this contact center'] : []),
+    '📞 Set up overflow routing when agents are busy',
+    '🎙️ Record a custom IVR greeting',
+    '📊 Enable call recording for this contact center',
+    '🗓 Change to holiday hours Dec 23–27',
+    '➕ Add a Referrals queue',
+    '🔄 Set lunch break for all agents',
+  ].slice(0, 5); // show max 5 chips
+
+  chips.innerHTML = extraChips.map((label, i) => {
+    // Map label back to SUGS indices for the 3 core ops
+    const sugIdx = label.includes('holiday') ? 0 : label.includes('Referral') ? 1 : label.includes('lunch') ? 2 : -1;
+    const onclick = sugIdx >= 0 ? `setSug(${sugIdx})` : `setManualSug(${JSON.stringify(label)})`;
+    return `<button class="sug-chip" onclick="${onclick}">${label}</button>`;
+  }).join('');
+}
+
+function setManualSug(text) {
+  document.getElementById('cmd-inp').value = text;
+  document.getElementById('cmd-inp').focus();
+  // For non-SUGS chips, show a generic helpful AI response
+  const manageMsgs = document.getElementById('manage-msgs');
+  appendToArea(manageMsgs, `<div class="user-msg msg-appear"><div class="user-bub">${text}</div></div>`);
+  const typingId = 'mt-' + Date.now();
+  appendToArea(manageMsgs, `<div class="typing-wrap msg-appear" id="${typingId}"><div class="ai-av">✦</div><div class="typing-bub"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`);
+  document.getElementById('cmd-inp').value = '';
+
+  const responses = {
+    '👥': "I can help you assign agents. Go to <strong>Admin → People → Agents</strong> to add users to Dialpad, then return here to assign them to this contact center.",
+    '📞': "When agents are busy, calls can queue with hold music, offer a callback, or overflow to voicemail. Want me to set up one of these routing rules?",
+    '🎙️': "I can configure a text-to-speech greeting using your contact center name, or you can upload an MP3. Which would you prefer?",
+    '📊': "Call recording can be set to record all calls automatically, or only when an agent manually starts it. Should I enable automatic recording for compliance and training?"
+  };
+  const emoji = text.slice(0,2);
+  const reply = responses[emoji] || "I can help with that. Could you give me a bit more detail about what you'd like to change?";
+  setTimeout(() => {
+    const t = document.getElementById(typingId); if(t) t.remove();
+    appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">${reply}</div></div>`);
+  }, 800);
 }
 
 /* ─── SETUP CHAT ENGINE ─── */
@@ -1142,7 +1211,18 @@ function pickSingle(qi, val, btn) {
   addUser(btn.textContent.trim());
   // Fill corresponding section
   if (qi===0) { setTimeout(()=>fillGeneral(val),300); }
-  if (qi===1) { setTimeout(()=>fillAgents(val),300); }
+  if (qi===1) {
+    setTimeout(()=>fillAgents(val),300);
+    if (val==='notAdded') {
+      // Acknowledge and continue after a beat
+      showTyping();
+      setTimeout(()=>{
+        addAI("No problem — I'll configure the contact center structure now. Once you're ready, you can add agents in your Dialpad admin and assign them directly from the Agents section. Let's keep going.");
+        setTimeout(()=>askQ(qi+1), 900);
+      }, 700);
+      return;
+    }
+  }
   if (qi===3) { setTimeout(()=>fillHours(val),300); }
   setTimeout(() => askQ(qi+1), 600);
 }
@@ -1249,6 +1329,7 @@ function makeConfig() {
 }
 
 function makeDemoConfig() {
+  S.answers = { agentCount: '11-25' }; // so notAdded check doesn't trigger
   return {
     industry:'Healthcare', industryKey:'healthcare',
     agentCount:'11-25', reasons:['Appointment scheduling','Billing & insurance','Clinical questions','Prescription refills'],

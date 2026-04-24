@@ -449,6 +449,50 @@ html, body {
 }
 .btn-cancel-sm:hover { border-color: var(--dp-text-2); }
 
+/* Bulk operations chip (cross-CC scope) */
+.sug-chip-bulk {
+  border: 1.5px solid rgba(124,58,237,0.35);
+  color: var(--dp-purple);
+  background: var(--dp-purple-pale);
+  font-weight: 600;
+}
+.sug-chip-bulk:hover { background: var(--dp-purple-subtle); border-color: var(--dp-purple); }
+
+/* Bulk quick-action chips (inside chat, after 📋 response) */
+.bulk-chip-row { margin-left: 32px; margin-top: 6px; display: flex; flex-direction: column; gap: 5px; }
+.bulk-quick-chip {
+  background: var(--dp-surface); border: 1px solid var(--dp-border);
+  color: var(--dp-text-2); padding: 7px 12px; border-radius: var(--r-sm);
+  font-size: 11px; text-align: left; cursor: pointer;
+  font-family: inherit; transition: all 0.15s; line-height: 1.4;
+}
+.bulk-quick-chip:hover { border-color: var(--dp-purple); color: var(--dp-purple); background: var(--dp-purple-pale); }
+
+/* Bulk preview card extras */
+.preview-card.bulk-preview { border-top: 2px solid var(--dp-purple); }
+.bulk-scope-banner {
+  background: var(--dp-purple-pale); padding: 8px 10px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid rgba(124,58,237,0.15);
+}
+.bulk-scope-text { font-size: 11px; color: var(--dp-text-2); flex: 1; }
+.bulk-scope-badge {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px; background: var(--dp-purple); color: white;
+  padding: 2px 6px; border-radius: 100px; white-space: nowrap;
+}
+.bulk-cc-preview { padding: 6px 10px 8px; border-top: 1px solid var(--dp-border-subtle); }
+.bulk-cc-hdr {
+  font-size: 10px; font-weight: 600; color: var(--dp-text-3);
+  text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px;
+}
+.bulk-cc-item {
+  display: flex; align-items: center; gap: 6px;
+  padding: 2px 0; font-size: 11px; color: var(--dp-text-2);
+}
+.bulk-cc-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--dp-green); flex-shrink: 0; }
+.bulk-cc-more { font-size: 11px; color: var(--dp-purple); padding: 3px 0; font-style: italic; }
+
 /* Manage panel footer */
 .manage-footer { flex-shrink: 0; border-top: 1px solid var(--dp-border); background: var(--dp-surface); }
 .sug-chips { padding: 10px 12px 6px; display: flex; flex-direction: column; gap: 5px; }
@@ -876,6 +920,51 @@ const SUGS = [
   }
 ];
 
+const BULK_SCENARIOS = [
+  {
+    text: 'Enable call recording across all contact centers',
+    emoji: '🔴',
+    scope: '47 contact centers · All regions',
+    changes: [
+      {t:'update', d:'Enable automatic call recording — 47 CCs'},
+      {t:'update', d:'Add recording disclosure to IVR greeting'},
+      {t:'notify', d:'All supervisors notified of updated recording policy'},
+    ]
+  },
+  {
+    text: 'Apply holiday hours Dec 25 & Jan 1 to all contact centers',
+    emoji: '🗓',
+    scope: '47 contact centers · All regions',
+    changes: [
+      {t:'update', d:'Set Closed schedule — Dec 25 (all 47 CCs)'},
+      {t:'update', d:'Set Closed schedule — Jan 1 (all 47 CCs)'},
+      {t:'update', d:'Switch IVR greeting to holiday message on those days'},
+      {t:'update', d:'Overflow to voicemail during closed hours'},
+    ]
+  },
+  {
+    text: 'Enable AI transcription & CSAT scoring on all CCs',
+    emoji: '✦',
+    scope: '47 contact centers · All regions',
+    changes: [
+      {t:'update', d:'Enable real-time AI transcription — 47 CCs'},
+      {t:'update', d:'Enable post-call CSAT survey — 47 CCs'},
+      {t:'update', d:'Enable PII redaction in all transcripts'},
+      {t:'create', d:'AI Scorecards auto-generated for each CC'},
+    ]
+  },
+  {
+    text: 'Standardize agent wrap-up time to 30 seconds across all CCs',
+    emoji: '⏱',
+    scope: '47 contact centers · All regions',
+    changes: [
+      {t:'update', d:'Set wrap-up time: 30 seconds — 47 CCs'},
+      {t:'update', d:'Standardize after-call work window'},
+      {t:'notify', d:'All agents notified of updated wrap-up policy'},
+    ]
+  }
+];
+
 /* ─── NAVIGATION ─── */
 function showView(id) {
   ['home','workspace'].forEach(v => document.getElementById('view-'+v).classList.remove('active'));
@@ -1129,7 +1218,7 @@ function switchToManageMode() {
     const sugIdx = label.includes('holiday') ? 0 : label.includes('Referral') ? 1 : label.includes('lunch') ? 2 : -1;
     const onclick = sugIdx >= 0 ? `setSug(${sugIdx})` : `setManualSug(${JSON.stringify(label)})`;
     return `<button class="sug-chip" onclick="${onclick}">${label}</button>`;
-  }).join('');
+  }).join('') + `<button class="sug-chip sug-chip-bulk" onclick="setManualSug('📋 Bulk admin: change settings across all contact centers')">📋 Bulk admin: update all contact centers at once</button>`;
 }
 
 function setManualSug(text) {
@@ -1149,6 +1238,17 @@ function setManualSug(text) {
     '📊': "Call recording can be set to record all calls automatically, or only when an agent manually starts it. Should I enable automatic recording for compliance and training?"
   };
   const emoji = text.slice(0,2);
+
+  // Bulk ops — special handling with sub-chips
+  if (emoji === '📋') {
+    setTimeout(() => {
+      const t = document.getElementById(typingId); if(t) t.remove();
+      appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">I can apply changes across <strong>all 47 of your contact centers</strong> at once — no need to update each one individually. Preview and confirm before anything applies:</div></div>`);
+      appendToArea(manageMsgs, `<div class="bulk-chip-row msg-appear">${BULK_SCENARIOS.map((s,i) => `<button class="bulk-quick-chip" onclick="runBulkPreview(${i})">${s.emoji} ${s.text}</button>`).join('')}</div>`);
+    }, 800);
+    return;
+  }
+
   const reply = responses[emoji] || "I can help with that. Could you give me a bit more detail about what you'd like to change?";
   setTimeout(() => {
     const t = document.getElementById(typingId); if(t) t.remove();
@@ -1352,13 +1452,26 @@ function runCmd() {
   if (!val) return;
   document.getElementById('cmd-inp').value = '';
   document.getElementById('manage-success').classList.remove('vis');
+
+  const manageMsgs = document.getElementById('manage-msgs');
+  appendToArea(manageMsgs, `<div class="user-msg msg-appear"><div class="user-bub">${val}</div></div>`);
+
+  // Detect bulk ops request
+  if (/bulk|all contact center|all cc/i.test(val)) {
+    const typingId = 'mt-' + Date.now();
+    appendToArea(manageMsgs, `<div class="typing-wrap msg-appear" id="${typingId}"><div class="ai-av">✦</div><div class="typing-bub"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`);
+    setTimeout(() => {
+      const t = document.getElementById(typingId); if(t) t.remove();
+      appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">I can apply changes across <strong>all 47 of your contact centers</strong> at once. Here are some common bulk operations — or type a custom one:</div></div>`);
+      appendToArea(manageMsgs, `<div class="bulk-chip-row msg-appear">${BULK_SCENARIOS.map((s,i) => `<button class="bulk-quick-chip" onclick="runBulkPreview(${i})">${s.emoji} ${s.text}</button>`).join('')}</div>`);
+    }, 800);
+    return;
+  }
+
   let m = SUGS[2];
   if (/holiday|dec/i.test(val))   m = SUGS[0];
   if (/referral|queue/i.test(val)) m = SUGS[1];
   if (/lunch|break/i.test(val))   m = SUGS[2];
-
-  const manageMsgs = document.getElementById('manage-msgs');
-  appendToArea(manageMsgs, `<div class="user-msg msg-appear"><div class="user-bub">${val}</div></div>`);
 
   // Highlight affected sections on left panel
   m.sections.forEach(id => {
@@ -1407,6 +1520,53 @@ function cancelCmd(pcId, sections) {
     sec.classList.remove('flash-amber');
     setBadge(id, 'done', '✓ Configured');
   });
+}
+
+/* ─── BULK OPS ─── */
+function runBulkPreview(idx) {
+  const s = BULK_SCENARIOS[idx];
+  const manageMsgs = document.getElementById('manage-msgs');
+  appendToArea(manageMsgs, `<div class="user-msg msg-appear"><div class="user-bub">${s.emoji} ${s.text}</div></div>`);
+
+  const typingId = 'mt-' + Date.now();
+  appendToArea(manageMsgs, `<div class="typing-wrap msg-appear" id="${typingId}"><div class="ai-av">✦</div><div class="typing-bub"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`);
+
+  const pcId = 'pc-' + Date.now();
+  setTimeout(() => {
+    const t = document.getElementById(typingId); if(t) t.remove();
+    appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">Scanned all <strong>47 contact centers</strong>. Found <strong>${s.changes.length} changes</strong> to apply. Review before confirming:</div></div>`);
+    appendToArea(manageMsgs, `<div class="preview-card bulk-preview msg-appear" id="${pcId}">
+      <div class="bulk-scope-banner">
+        <span style="font-size:13px">${s.emoji}</span>
+        <span class="bulk-scope-text"><strong>${s.scope}</strong></span>
+        <span class="bulk-scope-badge">Bulk · 47 CCs</span>
+      </div>
+      <div class="pc-list">${s.changes.map(c=>`<div class="pchange"><span class="ptype ${c.t}">${c.t}</span><span class="pdesc">${c.d}</span></div>`).join('')}</div>
+      <div class="bulk-cc-preview">
+        <div class="bulk-cc-hdr">Affected contact centers</div>
+        <div class="bulk-cc-item"><span class="bulk-cc-dot"></span>Healthcare Support Center · US East</div>
+        <div class="bulk-cc-item"><span class="bulk-cc-dot"></span>Financial Services Center · US West</div>
+        <div class="bulk-cc-item"><span class="bulk-cc-dot"></span>Retail Support Center · Canada</div>
+        <div class="bulk-cc-more">+ 44 more contact centers</div>
+      </div>
+      <div class="pc-footer">
+        <button class="btn-confirm" onclick="applyBulkCmd('${pcId}')">Confirm &amp; apply to all 47</button>
+        <button class="btn-cancel-sm" onclick="cancelBulkCmd('${pcId}')">Cancel</button>
+      </div>
+    </div>`);
+  }, 1000);
+}
+
+function applyBulkCmd(pcId) {
+  const pc = document.getElementById(pcId); if(pc) pc.remove();
+  const manageMsgs = document.getElementById('manage-msgs');
+  appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">✅ Changes applied to all <strong>47 contact centers</strong>. All admins notified. <span style="color:var(--dp-text-3);font-size:11px">Revert available for 30 min.</span></div></div>`);
+}
+
+function cancelBulkCmd(pcId) {
+  const pc = document.getElementById(pcId); if(pc) pc.remove();
+  const manageMsgs = document.getElementById('manage-msgs');
+  appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">Bulk operation cancelled. No changes were made.</div></div>`);
 }
 
 // Enter key on manage input

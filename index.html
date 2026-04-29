@@ -554,6 +554,121 @@ html, body {
 .msg-appear { animation: msgIn 0.2s ease; }
 @keyframes msgIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes dotPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+/* ── BUILD COMPLETE (overlay CTA section) ── */
+.build-complete { margin-top: 20px; border-top: 1px solid var(--dp-border); padding-top: 18px; display: none; }
+.build-complete.vis { display: block; }
+.build-ctas { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.build-ctas .btn-primary,
+.build-ctas .btn-outlined { justify-content: center; width: 100%; }
+
+/* ── TEST ENVIRONMENT BANNER ── */
+.test-env-banner {
+  background: linear-gradient(135deg, #0F4C3A, #065F46);
+  border-radius: var(--r); padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px; color: white;
+}
+.test-env-banner .btn-ghost { color: rgba(255,255,255,0.7); margin-left: auto; }
+.test-env-banner .btn-ghost:hover { background: rgba(255,255,255,0.15); color: white; }
+
+/* ── CALL FLOW DIAGRAM ── */
+.callflow-wrap {
+  padding: 16px; background: var(--dp-surface);
+  border: 1px solid var(--dp-border); border-radius: var(--r);
+  margin-bottom: 16px; overflow-x: auto;
+}
+.cf-steps { display: flex; align-items: center; min-width: fit-content; }
+.cf-step {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  padding: 10px 12px; border-radius: var(--r);
+  border: 2px solid var(--dp-border); background: var(--dp-surface);
+  opacity: 0.35; transition: all 0.4s ease; min-width: 82px; cursor: default;
+}
+.cf-step.cf-active {
+  border-color: var(--dp-purple); background: var(--dp-purple-pale);
+  opacity: 1; transform: scale(1.06);
+  box-shadow: 0 0 0 4px rgba(124,58,237,0.12);
+}
+.cf-step.cf-done { border-color: var(--dp-green); background: var(--dp-green-pale); opacity: 1; }
+.cf-step-ico { font-size: 18px; }
+.cf-step-lbl { font-size: 10px; font-weight: 700; text-align: center; color: var(--dp-text-2); line-height: 1.3; }
+.cf-step.cf-active .cf-step-lbl { color: var(--dp-purple); }
+.cf-step.cf-done .cf-step-lbl { color: #065F46; }
+.cf-arrow { color: var(--dp-border); font-size: 20px; flex-shrink: 0; padding: 0 4px; transition: color 0.4s; line-height: 1; }
+.cf-arrow.cf-done { color: var(--dp-green); }
+
+/* ── SIM CALL CARDS ── */
+.sim-call-card {
+  background: var(--dp-surface); border: 1.5px solid var(--dp-border);
+  border-radius: var(--r); margin-bottom: 10px; overflow: hidden; transition: border-color 0.3s;
+}
+.sim-call-card.active { border-color: var(--dp-purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
+.sim-call-card.done { border-color: var(--dp-green); }
+.sim-call-hdr {
+  padding: 9px 14px; display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid var(--dp-border-subtle);
+}
+.sim-call-name { font-size: 13px; font-weight: 700; flex: 1; }
+.sim-call-phone { font-size: 11px; color: var(--dp-text-3); }
+.sim-call-status {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px;
+  padding: 2px 7px; border-radius: 100px;
+  background: var(--dp-surface-2); color: var(--dp-text-3);
+}
+.sim-call-status.routing { background: var(--dp-amber-pale); color: var(--dp-amber-dark); }
+.sim-call-status.queued  { background: #DBEAFE; color: #1D4ED8; }
+.sim-call-status.connected { background: var(--dp-green-pale); color: #065F46; }
+.sim-call-steps { padding: 8px 14px 10px; display: flex; flex-direction: column; gap: 4px; }
+.sim-route-step {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; color: var(--dp-text-3); opacity: 0; transition: opacity 0.3s ease;
+}
+.sim-route-step.vis { opacity: 1; color: var(--dp-text-2); }
+.sim-route-step.step-done { color: var(--dp-green); opacity: 1; }
+.sim-step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--dp-border); flex-shrink: 0; transition: background 0.3s; }
+.sim-route-step.vis .sim-step-dot { background: var(--dp-amber); }
+.sim-route-step.step-done .sim-step-dot { background: var(--dp-green); }
+
+/* ── INDUSTRY SUGGESTION CARD ── */
+.industry-sug-card {
+  margin-left: 32px; margin-top: 8px;
+  background: var(--dp-purple-pale); border: 1.5px solid rgba(124,58,237,0.3);
+  border-radius: 0 10px 10px 10px; padding: 12px 14px; max-width: 280px;
+}
+.industry-sug-title { font-size: 11px; font-weight: 700; color: var(--dp-purple); margin-bottom: 7px; }
+.industry-sug-topics { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.industry-sug-topic {
+  background: white; border: 1.5px solid rgba(124,58,237,0.25);
+  color: var(--dp-purple); font-size: 10px; font-weight: 600;
+  padding: 3px 8px; border-radius: 100px;
+}
+.industry-sug-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* ── INTELLIGENCE PANEL ── */
+.intel-panel {
+  background: linear-gradient(135deg, var(--dp-purple-pale) 0%, #FFF 100%);
+  border: 1.5px solid rgba(124,58,237,0.2); border-radius: var(--r); padding: 12px 14px;
+}
+.intel-panel-hdr {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 700; color: var(--dp-purple);
+  margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.intel-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 5px 0; border-bottom: 1px solid rgba(124,58,237,0.1);
+  font-size: 11px; color: var(--dp-text-2); line-height: 1.45;
+}
+.intel-item:last-child { border-bottom: none; padding-bottom: 0; }
+.intel-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.intel-dot--warn { background: var(--dp-amber); }
+.intel-dot--info { background: var(--dp-ai); }
+.intel-act {
+  font-size: 10px; font-weight: 600; color: var(--dp-purple); background: none; border: none;
+  cursor: pointer; font-family: inherit; padding: 0; text-decoration: underline;
+  margin-left: auto; flex-shrink: 0; white-space: nowrap;
+}
 </style>
 </head>
 <body>
@@ -707,8 +822,36 @@ html, body {
 
         <!-- Settings form -->
         <div class="settings-area">
+
+          <!-- Sim area: sibling of settings-inner so hiding settings-inner doesn't hide it -->
+          <div id="sim-area" style="display:none;max-width:740px;margin:0 auto;padding:20px 24px 40px">
+            <div class="test-env-banner">
+              <span style="font-size:22px">🧪</span>
+              <div>
+                <div style="font-size:13px;font-weight:700">Test Environment</div>
+                <div style="font-size:11px;opacity:0.75">Safe simulation — no real calls, no phone number required</div>
+              </div>
+              <button class="btn-ghost" onclick="exitSimMode()">Exit test →</button>
+            </div>
+            <div class="callflow-wrap">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--dp-text-3);margin-bottom:12px">Live call flow</div>
+              <div class="cf-steps">
+                <div class="cf-step" id="cf-0"><div class="cf-step-ico">📞</div><div class="cf-step-lbl">Incoming Call</div></div>
+                <div class="cf-arrow" id="cfa-0">›</div>
+                <div class="cf-step" id="cf-1"><div class="cf-step-ico">👋</div><div class="cf-step-lbl">Greeting</div></div>
+                <div class="cf-arrow" id="cfa-1">›</div>
+                <div class="cf-step" id="cf-2"><div class="cf-step-ico">🔢</div><div class="cf-step-lbl">IVR Menu</div></div>
+                <div class="cf-arrow" id="cfa-2">›</div>
+                <div class="cf-step" id="cf-3"><div class="cf-step-ico">⏳</div><div class="cf-step-lbl">Queue</div></div>
+                <div class="cf-arrow" id="cfa-3">›</div>
+                <div class="cf-step" id="cf-4"><div class="cf-step-ico">🎧</div><div class="cf-step-lbl">Agent</div></div>
+              </div>
+            </div>
+            <div id="sim-calls-list"></div>
+          </div>
+
           <div class="settings-inner">
-            <div class="settings-topbar">
+          <div class="settings-topbar">
               <span class="settings-breadcrumb">Admin <span class="bc-sep">/</span> Contact Centers <span class="bc-sep">/</span> <strong id="settings-bc-name">New Setup</strong></span>
               <div class="settings-actions">
                 <button class="btn-outlined btn-sm" onclick="goHome()">← Back</button>
@@ -815,6 +958,11 @@ html, body {
             </div>
           </div>
 
+          <!-- SIM MODE -->
+          <div class="panel-mode" id="mode-sim">
+            <div class="ai-msgs" id="sim-msgs"></div>
+          </div>
+
         </div><!-- /ai-panel -->
 
       </div><!-- /view-workspace -->
@@ -831,6 +979,14 @@ html, body {
     <p class="building-sub" id="build-ctx">Configuring your settings…</p>
     <div class="build-list" id="build-list"></div>
     <div class="prog-track"><div class="prog-bar" id="prog-bar"></div></div>
+    <div class="build-complete" id="build-complete">
+      <p style="font-size:14px;font-weight:700;margin-bottom:3px">✅ Your contact center is ready!</p>
+      <p style="font-size:12px;color:var(--dp-text-3);margin-bottom:14px">No phone number needed. What would you like to do next?</p>
+      <div class="build-ctas">
+        <button class="btn-primary" onclick="startTestEnv()">🧪 &nbsp;Test your contact center</button>
+        <button class="btn-outlined" onclick="skipToSettings()">Go to settings →</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1028,9 +1184,18 @@ function resetWorkspace() {
   document.getElementById('cc-status-dot').className = 'cc-dot cc-dot--setup';
   // Reset panel modes
   document.getElementById('mode-manage').classList.remove('active');
+  document.getElementById('mode-sim').classList.remove('active');
   document.getElementById('mode-setup').classList.add('active');
   document.getElementById('ai-panel-title').textContent = 'Agentic Admin';
   document.getElementById('ai-panel-badge').textContent = 'Setup';
+  // Reset sim area
+  document.getElementById('sim-area').style.display = 'none';
+  document.getElementById('settings-inner').style.display = '';
+  _simRunning = false;
+  S.preSelectedReasons = null;
+  // Reset build-complete
+  const bc = document.getElementById('build-complete');
+  bc.classList.remove('vis');
 }
 
 function setBodyEmpty(id, html) { document.getElementById('body-'+id).innerHTML = html; }
@@ -1199,9 +1364,21 @@ function switchToManageMode() {
 
   const agentsNotAdded = S.answers.agentCount === 'notAdded';
 
-  // Contextual greeting based on what's still pending
   const manageMsgs = document.getElementById('manage-msgs');
   manageMsgs.innerHTML = '';
+
+  // AI Intelligence panel at the top
+  const intelItems = getIntelItems(S.config);
+  appendToArea(manageMsgs, `<div class="intel-panel msg-appear">
+    <div class="intel-panel-hdr">✦ &nbsp;AI Recommendations</div>
+    ${intelItems.map((item,i) => `<div class="intel-item">
+      <div class="intel-dot intel-dot--${item.dot}"></div>
+      <span>${item.msg}</span>
+      ${item.action ? `<button class="intel-act" onclick="actOnIntel(${i})">${item.action} →</button>` : ''}
+    </div>`).join('')}
+  </div>`);
+
+  // Contextual greeting based on what's still pending
   const greeting = agentsNotAdded
     ? "Your contact center is configured! One thing remaining: <strong>add agents to your Dialpad account</strong> and assign them here — I've flagged this in the Agents section. Ask me anything else to keep customising."
     : "Your contact center is live and fully configured. Ask me to make changes in plain language — I'll preview everything before applying.";
@@ -1304,7 +1481,14 @@ function renderSingle(qi, opts) {
   appendToArea(setupMsgs(), `<div class="opts-group msg-appear" id="opts-${qi}">${opts.map(o=>`<button class="opt-chip" onclick="pickSingle(${qi},'${o.v}',this)">${o.l}</button>`).join('')}</div>`);
 }
 function renderMulti(qi, opts) {
-  appendToArea(setupMsgs(), `<div class="msg-appear"><div class="opts-group" id="opts-${qi}" style="margin-bottom:7px">${opts.map(o=>`<button class="opt-chip" onclick="toggleMulti(${qi},'${o.v}',this)">${o.l}</button>`).join('')}</div><div class="continue-row" id="cr-${qi}" style="display:none"><button class="btn-continue" onclick="confirmMulti(${qi})">Continue →</button></div></div>`);
+  const preVals = (qi === 2 && S.preSelectedReasons) ? S.preSelectedReasons.vals : [];
+  if (preVals.length) S.multiSel = [];
+  const chips = opts.map(o => {
+    const pre = preVals.includes(o.v);
+    if (pre) S.multiSel.push({v:o.v, l:o.l});
+    return `<button class="opt-chip${pre?' selected':''}" onclick="toggleMulti(${qi},'${o.v}',this)">${o.l}</button>`;
+  }).join('');
+  appendToArea(setupMsgs(), `<div class="msg-appear"><div class="opts-group" id="opts-${qi}" style="margin-bottom:7px">${chips}</div><div class="continue-row" id="cr-${qi}" style="display:${preVals.length?'block':'none'}"><button class="btn-continue" onclick="confirmMulti(${qi})">Continue →</button></div></div>`);
 }
 function lockOpts(qi) {
   const el = document.getElementById('opts-'+qi);
@@ -1316,11 +1500,14 @@ function pickSingle(qi, val, btn) {
   S.answers[QS[qi].id] = val;
   addUser(btn.textContent.trim());
   // Fill corresponding section
-  if (qi===0) { setTimeout(()=>fillGeneral(val),300); }
+  if (qi===0) {
+    setTimeout(()=>fillGeneral(val),300);
+    setTimeout(()=>showIndustrySuggestion(val), 800);
+    return;
+  }
   if (qi===1) {
     setTimeout(()=>fillAgents(val),300);
     if (val==='notAdded') {
-      // Acknowledge and continue after a beat
       showTyping();
       setTimeout(()=>{
         addAI("No problem — I'll configure the contact center structure now. Once you're ready, you can add agents in your Dialpad admin and assign them directly from the Agents section. Let's keep going.");
@@ -1386,13 +1573,9 @@ function startBuilding() {
       const lastIco = document.getElementById('bi-'+(steps.length-1));
       if(lastIco) lastIco.textContent='✓';
       setTimeout(() => {
-        fillAI(cfg);
-        markLive();
-        switchToManageMode();
-        const ov = document.getElementById('building-overlay');
-        ov.style.transition = 'opacity 0.4s ease';
-        ov.style.opacity = '0';
-        setTimeout(() => { ov.classList.remove('vis'); ov.style.opacity=''; ov.style.transition=''; }, 420);
+        const buildComplete = document.getElementById('build-complete');
+        buildComplete.classList.add('vis');
+        buildComplete.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }, 700);
       return;
     }
@@ -1571,6 +1754,271 @@ function cancelBulkCmd(pcId) {
   const pc = document.getElementById(pcId); if(pc) pc.remove();
   const manageMsgs = document.getElementById('manage-msgs');
   appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">Bulk operation cancelled. No changes were made.</div></div>`);
+}
+
+/* ─── INDUSTRY SUGGESTIONS ─── */
+const INDUSTRY_SUGG = {
+  healthcare:   { topics:['Appointment scheduling','Billing & insurance','Clinical questions','Prescription refills'], vals:['appt','billing','clinical','rx'] },
+  financial:    { topics:['Payment queries','Account & disputes','Loan applications','Fraud alerts'], vals:['pay','acct','loans','fraud'] },
+  retail:       { topics:['Order status','Returns & exchanges','Product questions','Shipping issues'], vals:['orders','returns','products','shipping'] },
+  technology:   { topics:['Technical support','Account & billing','Onboarding help','Bug reports'], vals:['support','billing','onboard','bugs'] },
+  professional: { topics:['Appointment booking','New client inquiries','Billing questions','Document requests'], vals:['appt','inq','billing','docs'] },
+  other:        { topics:['Sales inquiries','Customer support','Billing questions','Technical issues'], vals:['sales','support','billing','tech'] }
+};
+
+function showIndustrySuggestion(industryKey) {
+  const sugg = INDUSTRY_SUGG[industryKey];
+  if (!sugg) { askQ(1); return; }
+  showTyping();
+  setTimeout(() => {
+    addAI(`In <strong>${CC_NAMES[industryKey]||industryKey}</strong>, customers typically call about:`);
+    appendToArea(setupMsgs(), `<div class="industry-sug-card msg-appear" id="industry-sug">
+      <div class="industry-sug-title">✦ Suggested contact reasons</div>
+      <div class="industry-sug-topics">${sugg.topics.map(t=>`<span class="industry-sug-topic">${t}</span>`).join('')}</div>
+      <div class="industry-sug-btns">
+        <button class="btn-primary btn-sm" onclick="acceptSuggestions()">Add these to my queues →</button>
+        <button class="btn-ghost btn-sm" onclick="skipSuggestions()">I'll choose my own</button>
+      </div>
+    </div>`);
+  }, 650);
+}
+
+function acceptSuggestions() {
+  S.preSelectedReasons = INDUSTRY_SUGG[S.answers.industry];
+  document.getElementById('industry-sug')?.querySelectorAll('button').forEach(b=>b.disabled=true);
+  addUser('Add these to my queues');
+  showTyping();
+  setTimeout(() => {
+    addAI("Great — I've pre-selected those as your contact reasons. They'll already be checked on the next step so you can confirm or adjust.");
+    setTimeout(() => askQ(1), 900);
+  }, 650);
+}
+
+function skipSuggestions() {
+  S.preSelectedReasons = null;
+  document.getElementById('industry-sug')?.querySelectorAll('button').forEach(b=>b.disabled=true);
+  addUser("I'll choose my own");
+  setTimeout(() => askQ(1), 400);
+}
+
+/* ─── INTELLIGENCE PANEL ─── */
+function getIntelItems(cfg) {
+  const dynamic = (cfg && cfg.is24x7)
+    ? { dot:'info', msg:'24/7 coverage is on — consider adding an emergency escalation path for critical issues.', action:null }
+    : { dot:'info', msg:`Your ${cfg ? cfg.hoursShort : 'business'} hours are set — consider adding a holiday exception schedule.`, action:null };
+  return [
+    { dot:'warn', msg:'Call recording is off — consider enabling for compliance and agent coaching.', action:'Enable' },
+    { dot:'warn', msg:'No reporting dashboard configured — add one to monitor queue health in real time.', action:'Set up' },
+    dynamic
+  ];
+}
+
+function actOnIntel(idx) {
+  const manageMsgs = document.getElementById('manage-msgs');
+  const items = getIntelItems(S.config);
+  const item = items[idx];
+  if (!item || !item.action) return;
+  appendToArea(manageMsgs, `<div class="user-msg msg-appear"><div class="user-bub">${item.action}: ${item.msg.split(' — ')[0]}</div></div>`);
+  const typingId = 'mt-' + Date.now();
+  appendToArea(manageMsgs, `<div class="typing-wrap msg-appear" id="${typingId}"><div class="ai-av">✦</div><div class="typing-bub"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`);
+  const replies = [
+    "I'll enable call recording for all calls in this contact center — both inbound and outbound. This applies immediately and covers all queues. Want me to confirm?",
+    "I can create a live dashboard showing queue lengths, wait times, and agent availability. Should I set up a standard monitoring view?",
+  ];
+  setTimeout(() => {
+    const t = document.getElementById(typingId); if(t) t.remove();
+    appendToArea(manageMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">${replies[idx]||"I can help with that. Could you give me more detail?"}</div></div>`);
+  }, 800);
+}
+
+/* ─── TEST ENVIRONMENT ─── */
+let _simRunning = false;
+
+function startTestEnv() {
+  document.getElementById('build-complete').classList.remove('vis');
+  const card = document.querySelector('.building-card');
+  if (card) {
+    card.querySelector('.building-title').textContent = 'Creating test environment…';
+    card.querySelector('.building-sub').textContent = 'No real calls will be made';
+  }
+  setTimeout(() => {
+    const ov = document.getElementById('building-overlay');
+    ov.style.transition = 'opacity 0.4s ease';
+    ov.style.opacity = '0';
+    setTimeout(() => {
+      ov.classList.remove('vis');
+      ov.style.opacity = '';
+      ov.style.transition = '';
+      ov.querySelector('.building-title').textContent = 'Building your contact center';
+      fillAI(S.config);
+      markLive();
+      enterSimMode();
+    }, 420);
+  }, 1100);
+}
+
+function skipToSettings() {
+  document.getElementById('build-complete').classList.remove('vis');
+  const ov = document.getElementById('building-overlay');
+  ov.style.transition = 'opacity 0.4s ease';
+  ov.style.opacity = '0';
+  setTimeout(() => {
+    ov.classList.remove('vis');
+    ov.style.opacity = '';
+    ov.style.transition = '';
+    fillAI(S.config);
+    markLive();
+    switchToManageMode();
+  }, 420);
+}
+
+function enterSimMode() {
+  document.getElementById('mode-setup').classList.remove('active');
+  document.getElementById('mode-manage').classList.remove('active');
+  document.getElementById('mode-sim').classList.add('active');
+  document.getElementById('ai-panel-title').textContent = 'Test Mode';
+  document.getElementById('ai-panel-badge').textContent = 'Simulation';
+  document.getElementById('header-badge').textContent = 'Test Mode';
+  document.getElementById('sim-area').style.display = 'block';
+  document.getElementById('settings-inner').style.display = 'none';
+  initSimulation(S.config);
+}
+
+function exitSimMode() {
+  document.getElementById('sim-area').style.display = 'none';
+  document.getElementById('settings-inner').style.display = '';
+  _simRunning = false;
+  switchToManageMode();
+}
+
+/* ─── SIMULATION ─── */
+const SIM_CALLS_DATA = {
+  healthcare: [
+    { name:'Jane Smith',     phone:'+1 (555) 0142', intent:'Appointment scheduling',   ivrKey:'1', ivrLabel:'Appointments', queue:'Appointments Queue', agent:'Alex Johnson',   waitSec:18, duration:'4m 32s' },
+    { name:'Robert Davis',   phone:'+1 (555) 0277', intent:'Billing inquiry',           ivrKey:'2', ivrLabel:'Billing',       queue:'Billing Queue',      agent:'Sarah Chen',     waitSec:32, duration:'6m 18s' },
+    { name:'Maria Torres',   phone:'+1 (555) 0391', intent:'Prescription refill',       ivrKey:'4', ivrLabel:'Prescriptions', queue:'Clinical Queue',     agent:'Marcus Williams',waitSec:8,  duration:'2m 44s' }
+  ],
+  financial: [
+    { name:'James Chen',     phone:'+1 (555) 0118', intent:'Account balance inquiry',   ivrKey:'1', ivrLabel:'Accounts',   queue:'Account Queue',  agent:'Alex Johnson',   waitSec:24, duration:'3m 12s' },
+    { name:'Lisa Park',      phone:'+1 (555) 0254', intent:'Fraud alert verification',  ivrKey:'3', ivrLabel:'Fraud',      queue:'Fraud Queue',    agent:'Sarah Chen',     waitSec:5,  duration:'8m 47s' },
+    { name:'Tom Williams',   phone:'+1 (555) 0387', intent:'Loan application status',   ivrKey:'2', ivrLabel:'Loans',      queue:'Loans Queue',    agent:'Marcus Williams',waitSec:41, duration:'5m 23s' }
+  ],
+  retail: [
+    { name:'Sarah Johnson',  phone:'+1 (555) 0163', intent:'Order status check',        ivrKey:'1', ivrLabel:'Orders',   queue:'Orders Queue',   agent:'Alex Johnson',   waitSec:12, duration:'2m 18s' },
+    { name:'Mike Brown',     phone:'+1 (555) 0241', intent:'Return request',            ivrKey:'2', ivrLabel:'Returns',  queue:'Returns Queue',  agent:'Sarah Chen',     waitSec:27, duration:'4m 55s' },
+    { name:'Emma Wilson',    phone:'+1 (555) 0359', intent:'Shipping delay question',   ivrKey:'4', ivrLabel:'Shipping', queue:'Support Queue',  agent:'Marcus Williams',waitSec:19, duration:'3m 31s' }
+  ],
+  technology: [
+    { name:'David Kim',      phone:'+1 (555) 0176', intent:'Technical support',         ivrKey:'1', ivrLabel:'Tech Support', queue:'Tech Queue',    agent:'Alex Johnson',   waitSec:35, duration:'12m 04s' },
+    { name:'Rachel Green',   phone:'+1 (555) 0248', intent:'Account billing question',  ivrKey:'2', ivrLabel:'Billing',      queue:'Billing Queue', agent:'Sarah Chen',     waitSec:14, duration:'3m 27s' },
+    { name:'Chris Martin',   phone:'+1 (555) 0362', intent:'Bug report',                ivrKey:'4', ivrLabel:'Bug Reports',  queue:'Support Queue', agent:'Marcus Williams',waitSec:22, duration:'7m 18s' }
+  ],
+  professional: [
+    { name:'Amanda Foster',  phone:'+1 (555) 0134', intent:'New client consultation',   ivrKey:'2', ivrLabel:'Inquiries', queue:'Client Queue',   agent:'Alex Johnson',   waitSec:16, duration:'5m 42s' },
+    { name:'Henry Clarke',   phone:'+1 (555) 0267', intent:'Appointment booking',       ivrKey:'1', ivrLabel:'Bookings',  queue:'Bookings Queue', agent:'Sarah Chen',     waitSec:9,  duration:'2m 56s' },
+    { name:'Sophia Wang',    phone:'+1 (555) 0381', intent:'Document request',          ivrKey:'4', ivrLabel:'Documents', queue:'Admin Queue',    agent:'Marcus Williams',waitSec:28, duration:'4m 11s' }
+  ],
+  other: [
+    { name:'John Martinez',  phone:'+1 (555) 0155', intent:'General inquiry',           ivrKey:'1', ivrLabel:'Support', queue:'Support Queue', agent:'Alex Johnson',   waitSec:20, duration:'3m 45s' },
+    { name:'Emily Taylor',   phone:'+1 (555) 0293', intent:'Sales inquiry',             ivrKey:'2', ivrLabel:'Sales',   queue:'Sales Queue',   agent:'Sarah Chen',     waitSec:11, duration:'5m 08s' },
+    { name:'Kevin Anderson', phone:'+1 (555) 0378', intent:'Billing question',          ivrKey:'3', ivrLabel:'Billing', queue:'Billing Queue', agent:'Marcus Williams',waitSec:33, duration:'4m 29s' }
+  ]
+};
+
+function initSimulation(cfg) {
+  document.querySelectorAll('.cf-step').forEach(el => el.classList.remove('cf-active','cf-done'));
+  document.querySelectorAll('.cf-arrow').forEach(el => el.classList.remove('cf-done'));
+  const calls = SIM_CALLS_DATA[cfg ? cfg.industryKey : 'other'] || SIM_CALLS_DATA.other;
+  document.getElementById('sim-calls-list').innerHTML = calls.map((c,i) => `
+    <div class="sim-call-card" id="sim-card-${i}">
+      <div class="sim-call-hdr">
+        <div><div class="sim-call-name">${c.name}</div><div class="sim-call-phone">${c.phone}</div></div>
+        <span class="sim-call-status" id="sim-status-${i}">Waiting</span>
+      </div>
+      <div class="sim-call-steps" id="sim-steps-${i}"></div>
+    </div>`).join('');
+
+  const simMsgs = document.getElementById('sim-msgs');
+  simMsgs.innerHTML = '';
+  appendToArea(simMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">Test environment ready. I'll simulate <strong>${calls.length} incoming calls</strong> through your contact center — no real calls, no phone number needed. Watch how each call routes.</div></div>`);
+  appendToArea(simMsgs, `<div style="padding-left:32px;margin-top:6px"><button class="btn-primary btn-sm" id="run-sim-btn" onclick="runAllSims()">▶&nbsp; Run simulation</button></div>`);
+}
+
+function runAllSims() {
+  if (_simRunning) return;
+  _simRunning = true;
+  const btn = document.getElementById('run-sim-btn');
+  if (btn) btn.disabled = true;
+  const cfg = S.config || { industryKey:'other' };
+  const calls = SIM_CALLS_DATA[cfg.industryKey] || SIM_CALLS_DATA.other;
+  const simMsgs = document.getElementById('sim-msgs');
+  appendToArea(simMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">Simulating ${calls.length} calls now…</div></div>`);
+  runSimCall(calls, 0, simMsgs);
+}
+
+function runSimCall(calls, idx, simMsgs) {
+  if (idx >= calls.length) {
+    setTimeout(() => {
+      appendToArea(simMsgs, `<div class="ai-msg msg-appear"><div class="ai-av">✦</div><div class="ai-bub">✅ Simulation complete! All ${calls.length} test calls routed successfully. Your contact center is working as configured.</div></div>`);
+      appendToArea(simMsgs, `<div style="padding-left:32px;margin-top:6px"><button class="btn-primary btn-sm" onclick="exitSimMode()">Go to settings →</button></div>`);
+    }, 600);
+    return;
+  }
+  const call = calls[idx];
+  const card = document.getElementById(`sim-card-${idx}`);
+  const stepsEl = document.getElementById(`sim-steps-${idx}`);
+  const statusEl = document.getElementById(`sim-status-${idx}`);
+
+  const steps = [
+    { label:`Call received from ${call.phone}`, flowIdx:0 },
+    { label:`Playing welcome greeting`,          flowIdx:1 },
+    { label:`IVR: Press ${call.ivrKey} for ${call.ivrLabel}`, flowIdx:2 },
+    { label:`Routing to ${call.queue} · Wait: ${call.waitSec}s`, flowIdx:3 },
+    { label:`Connected to ${call.agent} · ${call.duration}`,    flowIdx:4 }
+  ];
+
+  card.classList.add('active');
+  card.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  statusEl.className = 'sim-call-status routing';
+  statusEl.textContent = 'Routing';
+
+  document.querySelectorAll('.cf-step').forEach(el => el.classList.remove('cf-active','cf-done'));
+  document.querySelectorAll('.cf-arrow').forEach(el => el.classList.remove('cf-done'));
+
+  stepsEl.innerHTML = steps.map((s,i) =>
+    `<div class="sim-route-step" id="sim-step-${idx}-${i}"><div class="sim-step-dot"></div><span>${s.label}</span></div>`
+  ).join('');
+
+  let si = 0;
+  function tick() {
+    if (si >= steps.length) {
+      card.classList.remove('active'); card.classList.add('done');
+      statusEl.className = 'sim-call-status connected';
+      statusEl.textContent = '✓ Connected';
+      document.getElementById('cf-4')?.classList.remove('cf-active');
+      document.getElementById('cf-4')?.classList.add('cf-done');
+      setTimeout(() => runSimCall(calls, idx+1, simMsgs), 900);
+      return;
+    }
+    const step = steps[si];
+    const stepEl = document.getElementById(`sim-step-${idx}-${si}`);
+    if (stepEl) stepEl.classList.add('vis');
+    if (si > 0) {
+      const prev = document.getElementById(`sim-step-${idx}-${si-1}`);
+      if (prev) { prev.classList.remove('vis'); prev.classList.add('step-done'); }
+    }
+    // Update call-flow diagram
+    if (step.flowIdx > 0) {
+      document.getElementById(`cf-${step.flowIdx-1}`)?.classList.replace('cf-active','cf-done');
+      document.getElementById(`cfa-${step.flowIdx-1}`)?.classList.add('cf-done');
+    }
+    const cfEl = document.getElementById(`cf-${step.flowIdx}`);
+    if (cfEl) { cfEl.classList.remove('cf-done'); cfEl.classList.add('cf-active'); }
+    if (step.flowIdx === 3) { statusEl.className='sim-call-status queued'; statusEl.textContent='In Queue'; }
+    si++;
+    setTimeout(tick, 750);
+  }
+  setTimeout(tick, 400);
 }
 
 // Enter key on manage input

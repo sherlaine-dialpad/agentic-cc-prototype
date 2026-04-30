@@ -12,95 +12,113 @@
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Dialpad | AI Admin"/>
 <meta name="theme-color" content="#7C3AED"/>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%237C3AED'/%3E%3Cpath d='M9 8h6.5a7 7 0 010 14H9V8z' fill='white'/%3E%3Ccircle cx='22' cy='23' r='2.8' fill='white'/%3E%3C/svg%3E"/>
-<link rel="icon" sizes="32x32" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%237C3AED'/%3E%3Cpath d='M9 8h6.5a7 7 0 010 14H9V8z' fill='white'/%3E%3Ccircle cx='22' cy='23' r='2.8' fill='white'/%3E%3C/svg%3E"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='18 19 56 56'%3E%3Crect x='18' y='19' width='56' height='56' rx='10' fill='%23FFFFFF'/%3E%3Cpath d='M67.3113 44.9586C67.9208 45.0949 68.0417 46.0897 67.4718 46.3489C56.4717 50.0934 47.8132 59.6668 43.2922 72.411C43.0448 73.0289 41.9593 72.8798 41.8573 72.2204C40.3108 62.2251 33.405 54.2445 24.5086 52.091C23.9191 51.9483 23.8077 51.0222 24.3565 50.76C35.6512 46.1128 44.1398 36.5799 48.0621 24.4006C48.3071 23.7651 49.4906 23.9256 49.5913 24.6007C51.112 34.7954 58.2031 42.9218 67.3113 44.9586Z' fill='%237C52FF'/%3E%3C/svg%3E"/>
 <style>
 /* ── TOKENS ── */
 :root {
-  --dp-purple:        #7C3AED;
-  --dp-purple-dark:   #5B21B6;
-  --dp-purple-mid:    #8B5CF6;
-  --dp-purple-subtle: #EDE9FE;
-  --dp-purple-pale:   #F5F3FF;
-  --dp-ai:            #8A3FFC;
-  --dp-nav-bg:        #10022C;
+  --dp-purple:        #7C52FF;
+  --dp-purple-dark:   #5023DD;
+  --dp-purple-mid:    #7C52FF;
+  --dp-purple-subtle: #D3BCFF;
+  --dp-purple-pale:   #F5F0FF;
+  --dp-purple-text:   #5023DD;
+  --dp-purple-border: #D3BCFF;
+  --dp-ai:            #7C52FF;
   --dp-nav-w:         50px;
   --dp-surface:       #FFFFFF;
-  --dp-surface-2:     #F5F5F7;
-  --dp-text-1:        #1A1A2E;
-  --dp-text-2:        #4B5563;
-  --dp-text-3:        #9CA3AF;
-  --dp-border:        #E5E7EB;
-  --dp-border-subtle: #F3F4F6;
-  --dp-green:         #10B981;
-  --dp-green-pale:    #D1FAE5;
+  --dp-surface-2:     #F9F9F9;
+  --dp-text-1:        #1C1C1C;
+  --dp-text-2:        #3A3A3A;
+  --dp-text-3:        #535353;
+  --dp-border:        hsl(0 0% 11% / 0.11);
+  --dp-border-md:     hsl(0 0% 11% / 0.17);
+  --dp-border-subtle: hsl(0 0% 11% / 0.07);
+  --dp-active-bg:     hsl(0 0% 11% / 0.14);
+  --dp-hover-bg:      hsl(0 0% 11% / 0.06);
+  --dp-green:         #008E52;
+  --dp-green-pale:    #F6FCF5;
   --dp-amber:         #F59E0B;
-  --dp-amber-pale:    #FEF3C7;
-  --dp-amber-dark:    #92400E;
-  --dp-shadow-sm:     0 1px 3px rgba(0,0,0,0.08);
-  --dp-shadow-md:     0 4px 16px rgba(0,0,0,0.1);
-  --r-sm: 6px; --r: 10px; --r-lg: 14px;
+  --dp-amber-pale:    #FFFAE5;
+  --dp-amber-dark:    #815008;
+  --dp-shadow-sm:     0 1px 3px rgba(0,0,0,0.06);
+  --dp-shadow-md:     0 4px 16px rgba(0,0,0,0.08);
+  --r-sm: 6px; --r: 8px; --r-lg: 10px;
+  --header-h: 56px;
+  --sidebar-w: 216px;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body {
-  height: 100%; font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 14px; line-height: 1.5; color: var(--dp-text-1);
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI Adjusted", "Segoe UI", "Helvetica Neue", Cantarell, Ubuntu, Roboto, Arial, sans-serif;
+  font-size: 15px; line-height: 1.5; color: var(--dp-text-1);
   background: var(--dp-surface-2); -webkit-font-smoothing: antialiased;
 }
 
 /* ── SHELL ── */
 .shell { display: flex; height: 100vh; overflow: hidden; }
 .shell-nav {
-  width: var(--dp-nav-w); background: var(--dp-nav-bg);
+  width: var(--dp-nav-w); background: var(--dp-surface-2);
   display: flex; flex-direction: column; align-items: center;
-  padding: 10px 0; flex-shrink: 0; z-index: 30;
-  border-right: 1px solid rgba(255,255,255,0.07);
+  padding: 12px 0; flex-shrink: 0; z-index: 30;
+  border-right: 1px solid var(--dp-border);
 }
-.nav-logo { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; cursor: pointer; }
-.nav-icons { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.nav-logo { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; cursor: pointer; }
+.nav-icons { display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 20px; flex: 1; }
 .nav-icon {
-  width: 40px; height: 36px; border-radius: 8px;
+  width: 38px; height: 38px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: background 0.15s; color: rgba(255,255,255,0.4);
+  cursor: pointer; transition: background 0.1s, color 0.1s; color: var(--dp-text-3);
 }
-.nav-icon:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.8); }
-.nav-icon.active { background: rgba(124,58,237,0.3); color: #C4B5FD; }
-.nav-icon svg { width: 15px; height: 15px; fill: currentColor; }
-.nav-bottom { margin-top: auto; display: flex; flex-direction: column; gap: 2px; padding-bottom: 4px; }
+.nav-icon:hover { background: var(--dp-hover-bg); color: var(--dp-text-2); }
+.nav-icon.active { background: var(--dp-active-bg); color: var(--dp-text-1); }
+.nav-icon svg { width: 16px; height: 16px; fill: currentColor; }
+.nav-bottom { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-bottom: 8px; }
+.nav-avatar {
+  width: 32px; height: 32px; border-radius: 50%; background: #008E52;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 12px; font-weight: 600; cursor: pointer;
+}
 
 .shell-main { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
 .shell-header {
-  height: 44px; background: var(--dp-surface); border-bottom: 1px solid var(--dp-border);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 16px 0 20px; flex-shrink: 0; z-index: 20;
+  height: var(--header-h); background: var(--dp-surface-2); border-bottom: 1px solid var(--dp-border);
+  display: flex; align-items: stretch; flex-shrink: 0; z-index: 20;
 }
+.hdr-office {
+  width: var(--sidebar-w); flex-shrink: 0; border-right: 1px solid var(--dp-border);
+  display: flex; align-items: center; padding: 0 12px;
+}
+.office-select {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; gap: 6px; font-size: 13px; font-weight: 500; color: var(--dp-text-1);
+  cursor: pointer; padding: 5px 10px; border-radius: 6px;
+  border: 1px solid var(--dp-border-md); background: var(--dp-surface);
+}
+.office-select:hover { background: var(--dp-surface-2); }
+.office-chevron { color: var(--dp-text-3); flex-shrink: 0; font-size: 10px; }
+.hdr-main { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
 .hdr-left { display: flex; align-items: center; gap: 6px; }
 .breadcrumb {
-  font-size: 11px; color: var(--dp-text-3); font-weight: 500;
-  text-transform: uppercase; letter-spacing: 0.4px;
+  display: flex; align-items: center; gap: 2px;
+  font-size: 12px; color: var(--dp-text-3); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.04em;
 }
-.bc-sep { color: var(--dp-border); margin: 0 4px; font-weight: 400; }
-.bc-cur { font-size: 11px; font-weight: 700; color: var(--dp-text-2); text-transform: uppercase; letter-spacing: 0.4px; }
+.bc-sep { margin: 0 3px; color: var(--dp-text-3); }
+.bc-cur { color: var(--dp-text-2); font-weight: 500; text-transform: uppercase; }
 .header-badge {
-  background: var(--dp-purple-pale); color: var(--dp-purple);
+  background: var(--dp-purple-pale); color: var(--dp-purple-text);
   font-size: 10px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.5px; padding: 2px 8px; border-radius: 100px;
+  border: 1px solid var(--dp-purple-border);
 }
 .hdr-right { display: flex; align-items: center; gap: 10px; }
 .hdr-search {
-  display: flex; align-items: center; gap: 6px;
-  background: var(--dp-surface-2); border: 1px solid var(--dp-border);
-  border-radius: 6px; padding: 4px 10px; cursor: text;
+  display: flex; align-items: center; gap: 7px;
+  background: var(--dp-surface); border: 1px solid var(--dp-border-md);
+  border-radius: 6px; padding: 5px 10px; cursor: text; width: 200px; height: 32px;
 }
-.hdr-search-icon { color: var(--dp-text-3); font-size: 12px; }
-.hdr-search-text { font-size: 11px; color: var(--dp-text-3); white-space: nowrap; }
-.hdr-avatar {
-  width: 26px; height: 26px; background: var(--dp-purple-subtle);
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700; color: var(--dp-purple);
-}
+.hdr-search-icon { color: var(--dp-text-3); font-size: 13px; }
+.hdr-search-text { font-size: 13px; color: var(--dp-text-3); white-space: nowrap; }
 
 /* ── VIEWS ── */
 .page { flex: 1; overflow: hidden; display: flex; }
@@ -111,29 +129,34 @@ html, body {
 /* ── BUTTONS ── */
 .btn-primary {
   background: var(--dp-purple); color: white; border: none;
-  padding: 9px 18px; border-radius: var(--r-sm); font-size: 13px; font-weight: 600;
-  cursor: pointer; font-family: inherit; transition: background 0.15s;
-  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 500;
+  cursor: pointer; font-family: inherit; transition: background 0.1s;
+  display: inline-flex; align-items: center; gap: 6px; line-height: 1;
 }
 .btn-primary:hover { background: var(--dp-purple-dark); }
 .btn-outlined {
-  background: transparent; color: var(--dp-text-1); border: 1.5px solid var(--dp-border);
-  padding: 9px 18px; border-radius: var(--r-sm); font-size: 13px; font-weight: 600;
-  cursor: pointer; font-family: inherit; transition: all 0.15s;
+  background: var(--dp-surface); color: var(--dp-text-1); border: 1px solid var(--dp-border-md);
+  padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 500;
+  cursor: pointer; font-family: inherit; transition: all 0.1s;
 }
-.btn-outlined:hover { border-color: var(--dp-purple); color: var(--dp-purple); }
+.btn-outlined:hover { background: var(--dp-surface-2); }
 .btn-ghost {
-  background: none; border: none; color: var(--dp-text-2); font-size: 12px; font-weight: 500;
-  cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: var(--r-sm); transition: all 0.15s;
+  background: none; border: none; color: var(--dp-text-2); font-size: 13px; font-weight: 500;
+  cursor: pointer; font-family: inherit; padding: 6px 10px; border-radius: 4px; transition: all 0.1s;
 }
-.btn-ghost:hover { background: var(--dp-surface-2); color: var(--dp-text-1); }
-.btn-sm { padding: 5px 12px !important; font-size: 12px !important; }
+.btn-ghost:hover { background: var(--dp-hover-bg); color: var(--dp-text-1); }
+.btn-sm { padding: 5px 11px !important; font-size: 12px !important; }
 .btn-sec {
-  background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);
-  padding: 9px 18px; border-radius: var(--r-sm); font-size: 13px; font-weight: 600;
-  cursor: pointer; font-family: inherit; transition: background 0.15s;
+  background: var(--dp-surface-2); color: var(--dp-text-1); border: 1px solid var(--dp-border-md);
+  padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 500;
+  cursor: pointer; font-family: inherit; transition: background 0.1s;
 }
-.btn-sec:hover { background: rgba(255,255,255,0.18); }
+.btn-sec:hover { background: var(--dp-hover-bg); }
+/* Hero dark-bg variant */
+.hero-card .btn-sec {
+  background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.25);
+}
+.hero-card .btn-sec:hover { background: rgba(255,255,255,0.18); }
 
 /* ═══════════════════════════════════
    HOME VIEW
@@ -197,39 +220,39 @@ html, body {
 #view-workspace.active { display: flex; overflow: hidden; }
 
 .cc-sidebar {
-  width: 210px; flex-shrink: 0; background: var(--dp-surface);
+  width: var(--sidebar-w); flex-shrink: 0; background: var(--dp-surface-2);
   border-right: 1px solid var(--dp-border); display: flex; flex-direction: column; overflow: hidden;
 }
 .cc-sidebar-hdr {
-  padding: 12px 12px 8px; border-bottom: 1px solid var(--dp-border-subtle);
+  padding: 12px 16px 8px; border-bottom: 1px solid var(--dp-border);
   display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
 }
-.cc-sidebar-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--dp-text-3); }
+.cc-sidebar-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--dp-text-3); }
 .cc-add-btn {
   height: 22px; padding: 0 8px; border-radius: var(--r-sm); border: 1.5px solid var(--dp-border);
   background: none; cursor: pointer; display: flex; align-items: center; gap: 3px;
   color: var(--dp-text-3); font-size: 11px; font-weight: 600; font-family: inherit; transition: all 0.15s;
 }
 .cc-add-btn:hover { border-color: var(--dp-purple); color: var(--dp-purple); background: var(--dp-purple-pale); }
-.cc-list { flex: 1; overflow-y: auto; padding: 4px 6px; }
+.cc-list { flex: 1; overflow-y: auto; padding: 4px 0; }
 .cc-item {
-  display: flex; align-items: center; gap: 7px; padding: 6px 7px;
-  border-radius: var(--r-sm); cursor: pointer; transition: background 0.12s; margin-bottom: 1px;
+  display: flex; align-items: center; gap: 7px; padding: 5px 8px;
+  border-radius: 6px; cursor: pointer; transition: background 0.1s; margin: 0 8px 1px;
 }
-.cc-item:hover { background: var(--dp-surface-2); }
-.cc-item.active { background: var(--dp-purple-pale); }
+.cc-item:hover { background: var(--dp-hover-bg); }
+.cc-item.active { background: var(--dp-active-bg); }
 .cc-icon {
-  width: 16px; height: 16px; flex-shrink: 0; opacity: 0.5;
+  width: 16px; height: 16px; flex-shrink: 0; opacity: 0.45;
   display: flex; align-items: center; justify-content: center;
 }
-.cc-item.active .cc-icon { opacity: 1; color: var(--dp-purple); }
+.cc-item.active .cc-icon { opacity: 1; color: var(--dp-text-1); }
 .cc-icon svg { width: 13px; height: 13px; fill: currentColor; }
 .cc-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .cc-dot--active { background: var(--dp-green); }
 .cc-dot--setup  { background: var(--dp-amber); animation: dotPulse 1.5s ease infinite; }
-.cc-dot--idle   { background: var(--dp-border); }
-.cc-label { font-size: 12px; font-weight: 500; color: var(--dp-text-2); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.cc-item.active .cc-label { color: var(--dp-purple); font-weight: 600; }
+.cc-dot--idle   { background: hsl(0 0% 11% / 0.2); }
+.cc-label { font-size: 13px; font-weight: 400; color: var(--dp-text-2); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cc-item.active .cc-label { color: var(--dp-text-1); font-weight: 500; }
 .cc-search-row { padding: 6px 10px 8px; border-bottom: 1px solid var(--dp-border-subtle); }
 .cc-search-in {
   width: 100%; padding: 5px 8px; border: 1.5px solid var(--dp-border);
@@ -252,7 +275,7 @@ html, body {
   position: sticky; top: 0; z-index: 10; flex-shrink: 0;
   background: var(--dp-surface); border-bottom: 1px solid var(--dp-border);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 24px; height: 44px;
+  padding: 0 24px; height: 44px; font-size: 13px;
 }
 .settings-breadcrumb { font-size: 12px; color: var(--dp-text-3); }
 .settings-actions { display: flex; gap: 8px; }
@@ -371,20 +394,28 @@ html, body {
 }
 .ai-panel-hdr {
   padding: 0 14px; border-bottom: 1px solid var(--dp-border);
-  display: flex; align-items: center; gap: 9px; flex-shrink: 0; height: 44px;
-  background: linear-gradient(135deg, #faf8ff 0%, #fff 100%);
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0; height: var(--header-h);
+  background: var(--dp-surface-2);
 }
 .ai-hdr-star {
-  width: 26px; height: 26px; background: var(--dp-ai); border-radius: 7px;
+  width: 26px; height: 26px; background: var(--dp-purple); border-radius: 6px;
   display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(138,63,252,0.35);
 }
-.ai-hdr-title { font-size: 13px; font-weight: 700; flex: 1; }
+.ai-hdr-title { font-size: 13px; font-weight: 600; color: var(--dp-text-1); flex: 1; }
 .ai-hdr-badge {
-  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;
-  padding: 2px 7px; border-radius: 100px; background: var(--dp-purple-pale); color: var(--dp-purple);
-  border: 1px solid rgba(124,58,237,0.2);
+  font-size: 11px; font-weight: 500; color: var(--dp-text-3);
+  background: var(--dp-surface-2); border: 1px solid var(--dp-border-md);
+  padding: 2px 8px; border-radius: 100px;
 }
+/* AI panel tabs */
+.ai-panel-tabs { display: flex; border-bottom: 1px solid var(--dp-border); flex-shrink: 0; }
+.ai-panel-tab {
+  padding: 9px 14px 8px; font-size: 13px; font-weight: 400; color: var(--dp-text-2);
+  cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: color 0.1s, border-color 0.1s;
+}
+.ai-panel-tab:hover { color: var(--dp-text-1); }
+.ai-panel-tab.active { color: var(--dp-purple); border-bottom-color: var(--dp-purple); font-weight: 500; }
 
 /* Panel modes */
 .panel-mode { display: none; flex-direction: column; flex: 1; overflow: hidden; }
@@ -707,33 +738,33 @@ html, body {
   <!-- ── SKINNY NAV ── -->
   <nav class="shell-nav">
     <div class="nav-logo" onclick="goHome()">
-      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
-        <rect width="28" height="28" rx="6" fill="#7C3AED"/>
-        <path d="M8 7h6a7 7 0 010 14H8V7z" fill="white"/>
-        <circle cx="20" cy="21" r="2.5" fill="white"/>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="18 19 56 56" width="28" height="28">
+        <rect x="18" y="19" width="56" height="56" rx="10" fill="#FFFFFF"/>
+        <path d="M67.3113 44.9586C67.9208 45.0949 68.0417 46.0897 67.4718 46.3489C56.4717 50.0934 47.8132 59.6668 43.2922 72.411C43.0448 73.0289 41.9593 72.8798 41.8573 72.2204C40.3108 62.2251 33.405 54.2445 24.5086 52.091C23.9191 51.9483 23.8077 51.0222 24.3565 50.76C35.6512 46.1128 44.1398 36.5799 48.0621 24.4006C48.3071 23.7651 49.4906 23.9256 49.5913 24.6007C51.112 34.7954 58.2031 42.9218 67.3113 44.9586Z" fill="#7C52FF"/>
       </svg>
     </div>
     <div class="nav-icons">
       <div class="nav-icon" title="Home" onclick="goHome()">
-        <svg viewBox="0 0 20 20"><path d="M10 3L3 9v9h5v-5h4v5h5V9L10 3z"/></svg>
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 3L3 9v9h5v-5h4v5h5V9L10 3z"/></svg>
       </div>
       <div class="nav-icon" title="People">
-        <svg viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>
       </div>
       <div class="nav-icon active" title="Contact Center">
-        <svg viewBox="0 0 20 20"><path d="M2 3a1 1 0 00-1 1v1.293l7.146 7.147a2 2 0 002.829 0L18 5.293V4a1 1 0 00-1-1H2zm16 4.121l-5.586 5.586a4 4 0 01-5.657 0L1 7.121V16a1 1 0 001 1h16a1 1 0 001-1V7.121z"/></svg>
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 00-1 1v1.293l7.146 7.147a2 2 0 002.829 0L18 5.293V4a1 1 0 00-1-1H2zm16 4.121l-5.586 5.586a4 4 0 01-5.657 0L1 7.121V16a1 1 0 001 1h16a1 1 0 001-1V7.121z"/></svg>
       </div>
       <div class="nav-icon" title="Analytics">
-        <svg viewBox="0 0 20 20"><path d="M2 11l4-4 4 4 4-6 4 4v7H2v-5z"/></svg>
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2 11l4-4 4 4 4-6 4 4v7H2v-5z"/></svg>
       </div>
       <div class="nav-icon" title="Recents">
-        <svg viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"/></svg>
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"/></svg>
       </div>
     </div>
     <div class="nav-bottom">
       <div class="nav-icon" title="Settings">
-        <svg viewBox="0 0 20 20"><path d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"/></svg>
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"/></svg>
       </div>
+      <div class="nav-avatar">SL</div>
     </div>
   </nav>
 
@@ -742,16 +773,23 @@ html, body {
 
     <!-- Header -->
     <header class="shell-header">
-      <div class="hdr-left">
-        <span class="breadcrumb">Admin <span class="bc-sep">/</span> Dialpad, Inc. <span class="bc-sep">/</span> <span class="bc-cur" id="header-title">Contact Centers</span></span>
-        <span class="header-badge" id="header-badge">AI Admin</span>
-      </div>
-      <div class="hdr-right">
-        <div class="hdr-search">
-          <span class="hdr-search-icon">🔍</span>
-          <span class="hdr-search-text">Search Help Center</span>
+      <div class="hdr-office">
+        <div class="office-select">
+          <span>Dialpadbeta</span>
+          <span class="office-chevron">▾</span>
         </div>
-        <div class="hdr-avatar">SL</div>
+      </div>
+      <div class="hdr-main">
+        <div class="hdr-left">
+          <span class="breadcrumb">Admin <span class="bc-sep">/</span> <span class="bc-cur" id="header-title">Contact Centers</span></span>
+          <span class="header-badge" id="header-badge">AI Admin</span>
+        </div>
+        <div class="hdr-right">
+          <div class="hdr-search">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--dp-text-3)"><circle cx="8" cy="8" r="5"/><path d="M15 15l-3.5-3.5"/></svg>
+            <span class="hdr-search-text">Search Help Center</span>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -993,7 +1031,11 @@ html, body {
           <div class="ai-panel-hdr">
             <div class="ai-hdr-star">✦</div>
             <span class="ai-hdr-title" id="ai-panel-title">AI Admin</span>
-            <span class="ai-hdr-badge" id="ai-panel-badge">Setup</span>
+            <span class="ai-hdr-badge" id="ai-panel-badge">All CCs</span>
+          </div>
+          <div class="ai-panel-tabs">
+            <div class="ai-panel-tab active" id="tab-ask">Ask AI</div>
+            <div class="ai-panel-tab" id="tab-history">History</div>
           </div>
 
           <!-- SETUP MODE -->
